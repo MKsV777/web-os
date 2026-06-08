@@ -16,6 +16,15 @@ img.addEventListener("load", () => {
   ctx.drawImage(img, 0, 0);
 });*/
 
+var buttons = [
+];
+
+window.onload = function() {
+    for(let i=0; i<buttons.length; i++) {
+        drawButton("#28a745", buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y, "New Button");
+    }
+};
+
 // i should press click, letter x then click and then another click and then another letter to get data
 document.onkeypress = function (e) {
     e = e || window.event;
@@ -29,10 +38,13 @@ document.addEventListener('keydown', (event) => {
     window.w = window.xm;
   }else if(event.key === 'c') {
     window.addbutton();
+  }else if(event.key === 's'){
+    console.log(buttons);
   }
 });
 
 window.addbutton = () => {
+    buttons.push({x: window.xm, y: window.ym, w: window.w, h: window.h});
     drawButton("#28a745", window.xm, window.ym, window.w - window.xm, window.h - window.ym, "New Button");
 };
 
@@ -60,14 +72,16 @@ canvas.addEventListener('click', function(event) {
     const clickX = event.clientX - rect.left;
     const clickY = event.clientY - rect.top;
 
-    if (clickX >= button.x && clickX <= button.x + button.width &&
-        clickY >= button.y && clickY <= button.y + button.height) {
-        alert("Button clicked!");
-    }
+    let clicked = false;
+
+    for(let i = 0; i < buttons.length; i++){
+        if (clickX >= buttons[i].x && clickX <= (buttons[i].x + buttons[i].w) && 
+            clickY >= buttons[i].y && clickY <= (buttons[i].y + buttons[i].h)) {
+          alert("Dynamic Button " + (i + 1) + " clicked!");
+          return; // stop execution once hit found
+        }
+      }
     window.xm = clickX;
     window.ym = clickY;
 });
-
-drawButton(button.color, button.x, button.y, button.width, button.height, button.text);
-
 </script>
