@@ -17,13 +17,22 @@ img.addEventListener("load", () => {
 });*/
 
 var buttons = [
+    {
+        "x": 613,
+        "y": 725,
+        "w": 670,
+        "h": 785,
+        "code": "alert('test');",
+        "init": "let img = new Image(); img.onload = function() { ctx.drawImage(img, window.botonActual.x, window.botonActual.y, window.botonActual.w - window.botonActual.x, window.botonActual.h - window.botonActual.y); }; img.src = \"./public/placeholder.svg\";"
+    }
 ];
 
 window.onload = function() {
     for(let i=0; i<buttons.length; i++) {
         window.botonActual = buttons[i];
         eval(buttons[i].init);
-        drawButton("#28a745", buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y, "New Button");
+        // please gray
+        drawButton("#B2BEB5", buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y, "New Button");
     }
 };
 
@@ -46,10 +55,11 @@ document.addEventListener('keydown', (event) => {
 });
 
 window.addbutton = () => {
+    textx = prompt("text:");
     codexc = prompt("init js:");
     codex = prompt("click js:");
     buttons.push({x: window.xm, y: window.ym, w: window.w, h: window.h, code: codex, init: codexc});
-    drawButton("#28a745", window.xm, window.ym, window.w - window.xm, window.h - window.ym, "New Button", codex, codexc);
+    drawButton("#28a745", window.xm, window.ym, window.w - window.xm, window.h - window.ym, textx, codex, codexc);
     window.botonActual = buttons[buttons.length - 1];
     eval(buttons[buttons.length - 1].init);
 };
