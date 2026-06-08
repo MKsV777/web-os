@@ -44,20 +44,11 @@ document.addEventListener('keydown', (event) => {
 });
 
 window.addbutton = () => {
-    buttons.push({x: window.xm, y: window.ym, w: window.w, h: window.h});
-    drawButton("#28a745", window.xm, window.ym, window.w - window.xm, window.h - window.ym, "New Button");
+    buttons.push({x: window.xm, y: window.ym, w: window.w, h: window.h, code: "alert('Button Clicked!')"});
+    drawButton("#28a745", window.xm, window.ym, window.w - window.xm, window.h - window.ym, "New Button", "alert('Button Clicked!')");
 };
 
-const button = {
-    x: canvas.width / 2 - 150/2,
-    y: canvas.height - 50,
-    width: 150,
-    height: 50,
-    text: "Click Me",
-    color: "#007BFF"
-};
-
-function drawButton(color, x,y,width,height,text) {
+function drawButton(color, x,y,width,height,text,code) {
     ctx.fillStyle = color;
     ctx.fillRect(x, y, width, height);
     
@@ -77,7 +68,8 @@ canvas.addEventListener('click', function(event) {
     for(let i = 0; i < buttons.length; i++){
         if (clickX >= buttons[i].x && clickX <= (buttons[i].x + buttons[i].w) && 
             clickY >= buttons[i].y && clickY <= (buttons[i].y + buttons[i].h)) {
-          alert("Dynamic Button " + (i + 1) + " clicked!");
+          //alert("Dynamic Button " + (i + 1) + " clicked!");
+          eval(buttons[i].code); // execute the code associated with the button
           return; // stop execution once hit found
         }
       }
