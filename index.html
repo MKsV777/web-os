@@ -1,0 +1,14 @@
+<canvas id="canvas"></canvas>
+
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  // Set canvas size to fill the window
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  // Draw a simple rectangle
+  ctx.fillStyle = 'blue';
+  ctx.fillRect(50, 50, 200, 100);
+</script>
