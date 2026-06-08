@@ -7,13 +7,65 @@
   // Set canvas size to fill the window
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-
+/*
   const img = new Image();
 
   img.src ="./public/placeholder.svg";
 
 img.addEventListener("load", () => {
   ctx.drawImage(img, 0, 0);
+});*/
+
+// i should press click, letter x then click and then another click and then another letter to get data
+document.onkeypress = function (e) {
+    e = e || window.event;
+    console.log(window.xm / canvas.width, " " ,window.ym / canvas.height, " ", window.w / canvas.width, " ", window.h / canvas.height);
+};
+
+document.addEventListener('keydown', (event) => {
+  // event.key devuelve la letra o tecla presionada
+  if (event.key === 'x') {
+    window.h = window.ym;
+    window.w = window.xm;
+  }
 });
+
+window.addbutton = () => {
+    drawButton("#28a745", window.xm, window.ym, window.w - window.xm, window.h - window.ym, "New Button");
+};
+
+const button = {
+    x: canvas.width / 2 - 150/2,
+    y: canvas.height - 50,
+    width: 150,
+    height: 50,
+    text: "Click Me",
+    color: "#007BFF"
+};
+
+function drawButton(color, x,y,width,height,text) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, width, height);
+    
+    ctx.fillStyle = "white";
+    ctx.font = "20px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(text, x + width / 2, y + height / 2 + 7);
+}
+
+canvas.addEventListener('click', function(event) {
+    const rect = canvas.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const clickY = event.clientY - rect.top;
+
+    if (clickX >= button.x && clickX <= button.x + button.width &&
+        clickY >= button.y && clickY <= button.y + button.height) {
+        alert("Button clicked!");
+    }
+    window.xm = clickX;
+    window.ym = clickY;
+});
+
+drawButton(button.color, button.x, button.y, button.width, button.height, button.text);
 
 </script>
