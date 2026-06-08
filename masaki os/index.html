@@ -44,8 +44,9 @@ document.addEventListener('keydown', (event) => {
 });
 
 window.addbutton = () => {
-    buttons.push({x: window.xm, y: window.ym, w: window.w, h: window.h, code: "alert('Button Clicked!')"});
-    drawButton("#28a745", window.xm, window.ym, window.w - window.xm, window.h - window.ym, "New Button", "alert('Button Clicked!')");
+    codex = prompt("js:");
+    buttons.push({x: window.xm, y: window.ym, w: window.w, h: window.h, code: codex});
+    drawButton("#28a745", window.xm, window.ym, window.w - window.xm, window.h - window.ym, "New Button", codex);
 };
 
 function drawButton(color, x,y,width,height,text,code) {
