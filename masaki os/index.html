@@ -27,6 +27,7 @@ var buttons = [
     }
 ];
 
+
 window.onload = function() {
     for(let i=0; i<buttons.length; i++) {
         window.botonActual = buttons[i];
@@ -55,11 +56,13 @@ document.addEventListener('keydown', (event) => {
 });
 
 window.addbutton = () => {
+    color = prompt("color:");
+    if(color == null) color = "#B2BEB5";
     textx = prompt("text:");
     codexc = prompt("init js:");
     codex = prompt("click js:");
     buttons.push({x: window.xm, y: window.ym, w: window.w, h: window.h, code: codex, init: codexc});
-    drawButton("#28a745", window.xm, window.ym, window.w - window.xm, window.h - window.ym, textx, codex, codexc);
+    drawButton(color, window.xm, window.ym, window.w - window.xm, window.h - window.ym, textx, codex, codexc);
     window.botonActual = buttons[buttons.length - 1];
     eval(buttons[buttons.length - 1].init);
 };
