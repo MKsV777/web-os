@@ -1,0 +1,20 @@
+Masaki OS
+an operating system designed for backend developers
+----------------------------------
+how to test? 
+
+https://ipfs.io/ipns/k51qzi5uqu5djfoic6u3t0lpy8x2flnrmweptjv32uk90r84lfhh6h81wbz4pv
+this is hosted on ipfs via an ipns for now, i plan to host it somewhere else in the future
+
+----------------------------------
+some ai was used
+
+- github copilot autocomplete was used, all logic was reviewed
+  by me, so it should not affect the code quality.
+
+----------------------------------
+how to deploy?
+-git clone git@github.com:MKsV777/web-os.git
+-cd masaki os
+-npm install
+-npm run dev
