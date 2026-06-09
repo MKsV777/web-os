@@ -48,14 +48,6 @@
   window.draggedButton = null;
   window.xmg = 0;
   window.ymg = 0;
-/*
-  const img = new Image();
-
-  img.src ="./public/placeholder.svg";
-
-img.addEventListener("load", () => {
-  ctx.drawImage(img, 0, 0);
-});*/
 
 var buttons = [
     {
@@ -100,7 +92,7 @@ for(let i=0; i<4; i++) {
     "init": `let img = new Image(); img.src = './public/placeholder.svg'; img.onload = function() { buttons[${i + 2}].loadedImg = img; };`,
     "color": "#B2BEB5",
     "text": "ico",
-    "down": "window.isDragging = true; window.draggedButton = window.botonActual;"
+    "down": ""
   });   
 }
 
