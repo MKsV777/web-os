@@ -24,7 +24,7 @@
     // move a square across the screen top to bottom
     if(contador > processCanvas.height) contador = 0;
     processCtx.rect( 50,contador % processCanvas.height, 100, 100);
-    processCtx.rect( 50,0, 100, 100);
+    processCtx.rect( 0,0, 1800, 100);
     processCtx.fill();
   }, 1);
 
@@ -58,7 +58,7 @@ var buttons = [
         "w": 1000 + 500,
         "h": 550 ,
         "code": "",
-        "down": "window.isDragging = true; window.draggedButton = window.botonActual",
+        "down": 'window.isDragging = true; window.draggedButton = window.botonActual',
         "init": "",
         "color": "green",
         "process": 1,
@@ -137,7 +137,7 @@ window.addEventListener('mousedown', function(event) {
     const actualheight = buttons[i].h - buttons[i].y;
 
     if(clickX >= buttons[i].x && clickX <= (buttons[i].x + actualwidth) && 
-        clickY >= buttons[i].y && clickY <= (buttons[i].y + actualheight)) {
+        clickY >= buttons[i].y - 400 && clickY <= (buttons[i].y - 400 + actualheight)) {
       window.botonActual = buttons[i];
       eval(buttons[i].down);
       return; // stop execution once hit found
@@ -159,7 +159,7 @@ window.xmg = event.clientX - rect.left;
     window.ymg = event.clientY - rect.top;
 if (window.isDragging && window.draggedButton) {
         const halfWidth = (window.draggedButton.w - window.draggedButton.x) / 2;
-        const halfHeight = (window.draggedButton.h - window.draggedButton.y) / 2;
+        const halfHeight = (window.draggedButton.h - window.draggedButton.y) / 2 - 200;
 
         const currentW = window.draggedButton.w - window.draggedButton.x;
         const currentH = window.draggedButton.h - window.draggedButton.y;
