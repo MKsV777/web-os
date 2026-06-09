@@ -68,6 +68,15 @@ var buttons = [
         "init": "",
         "color": "green",
         "process": 1,
+    },{
+        "x": 613,
+        "y": 725,
+        "w": 670,
+        "h": 785,
+        "code": '',
+        "init": "",
+        "color": "#B2BEB5",
+        "text": "ico",
     }
 
 ];
@@ -81,12 +90,26 @@ var buttons = [
     }
 */
 
+for(let i=0; i<4; i++) {
+  buttons.push({
+    "x": 613 + i*100,
+    "y": 725,
+    "w": 670 + i*100,
+    "h": 785,
+    "code": '',
+    "init": `let img = new Image(); img.src = './public/placeholder.svg'; img.onload = function() { buttons[${i + 2}].loadedImg = img; };`,
+    "color": "#B2BEB5",
+    "text": "ico",
+    "down": "window.isDragging = true; window.draggedButton = window.botonActual;"
+  });   
+}
+
 window.onload = function() {
     for(let i=0; i<buttons.length; i++) {
         window.botonActual = buttons[i];
         eval(buttons[i].init);
       
-        drawButton(buttons[i].color, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y, "New Button");
+        drawButton(buttons[i].color, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y, buttons[i].text, buttons[i].code, buttons[i].init);
     }
 };
 
@@ -114,7 +137,7 @@ window.addbutton = () => {
     textx = prompt("text:");
     codexc = prompt("init js:");
     codex = prompt("click js:");
-    buttons.push({x: window.xm, y: window.ym, w: window.w, h: window.h, code: codex, init: codexc});
+    buttons.push({x: window.xm, y: window.ym, w: window.w, h: window.h, code: codex, init: codexc, text: textx, color: color});
     drawButton(color, window.xm, window.ym, window.w - window.xm, window.h - window.ym, textx, codex, codexc);
     window.botonActual = buttons[buttons.length - 1];
     eval(buttons[buttons.length - 1].init);
@@ -201,7 +224,11 @@ canvas.addEventListener('click', function(event) {
 const interz = setInterval(() =>{
   ctx.clearRect(0, 0, processCanvas.width, processCanvas.height);
   for(let i=0; i<buttons.length; i++) {
-    drawButton(buttons[i].color, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y, "New Button");
+    if(buttons[i].loadedImg) {
+      ctx.drawImage(buttons[i].loadedImg, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y);
+    } else {
+      drawButton(buttons[i].color, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y, buttons[i].text, buttons[i].code, buttons[i].init);
+    }
   }
   // draw every process that is on the buttons, draw a each process(canvas) on top of the buttons that have it
   for(let i=0; i<buttons.length; i++) {
