@@ -58,6 +58,7 @@
   window.xmg = 0;
   window.ymg = 0;
 
+  
 var buttons = [
     {
         "x": 4 + 500,
@@ -69,6 +70,7 @@ var buttons = [
         "init": "",
         "color": "green",
         "process": 1,
+        "text": ""
     }
 
 ];
@@ -220,8 +222,19 @@ canvas.addEventListener('click', function(event) {
     window.ym = clickY;
 });
 
+  let bkg = new Image();
+
+  bkg.src = "./public/background.svg";
 const interz = setInterval(() =>{
+
   ctx.clearRect(0, 0, processCanvas.width, processCanvas.height);
+
+  let x = (canvas.width - bkg.width) / 2 * .0002 -300;
+  let y = (canvas.height- bkg.height)/ 2 * .0002 -90;
+
+  ctx.drawImage(bkg, x, y, canvas.width * 1.39, canvas.height * 1.2);
+  
+
   for(let i=0; i<buttons.length; i++) {
     if(buttons[i].loadedImg) {
       ctx.drawImage(buttons[i].loadedImg, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y);
