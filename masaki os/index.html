@@ -2,6 +2,15 @@
 <canvas id="process" style="width: 100%; height: 100%; display:none "></canvas>
 
 <script>
+
+  window.processes = {
+    "process1": {
+      "display" : true,
+      "x": 0,
+      "y": 0,
+    }
+  }
+  
   //get image from process and apply it to window.img
   const processCanvas = document.getElementById('process');
   const processCtx = processCanvas.getContext('2d');
@@ -80,7 +89,7 @@ for(let i=0; i<4; i++) {
     "y": 725,
     "w": 670 + i*100,
     "h": 785,
-    "code": 'alert("button ' + (i + 1) + ' clicked!");',
+    "code": 'processes["process1"].display = !processes["process1"].display; processes["process1"].x = window.botonActual.x; processes["process1"].y = window.botonActual.y; if(processes["process1"].display) { processes["process1"].x += 10000000} else { processes["process1"].x -= 10000000};',
     "init": `let img = new Image(); img.src = './public/placeholder.svg'; img.onload = function() { buttons[buttons.length - ${4 - i}].loadedImg = img; };`,
     "color": "white",
     "text": "ico",
@@ -222,7 +231,7 @@ const interz = setInterval(() =>{
   }
   // draw every process that is on the buttons, draw a each process(canvas) on top of the buttons that have it
   for(let i=0; i<buttons.length; i++) {
-    if(buttons[i].process) {
+    if(buttons[i].process && window.processes["process" + buttons[i].process] && window.processes["process" + buttons[i].process].display) {
       ctx.drawImage(processCanvas, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y);
     }
   }
