@@ -23,8 +23,8 @@
     processCtx.beginPath();
     // move a square across the screen top to bottom
     if(contador > processCanvas.height) contador = 0;
-    processCtx.rect(0,contador % processCanvas.height, 100, 100);
-    processCtx.rect(0,0, 100, 100);
+    processCtx.rect( 50,contador % processCanvas.height, 100, 100);
+    processCtx.rect( 50,0, 100, 100);
     processCtx.fill();
   }, 1);
 
@@ -37,6 +37,11 @@
   // Set canvas size to fill the window
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+
+  window.isDragging = false;
+  window.draggedButton = null;
+  window.xmg = 0;
+  window.ymg = 0;
 /*
   const img = new Image();
 
@@ -47,22 +52,13 @@ img.addEventListener("load", () => {
 });*/
 
 var buttons = [
-
     {
-        "x": 4,
-        "y": 13,
-        "w": 1677,
-        "h": 67,
-        "code": "buttons[0].x = window.xm; ",
-        "init": "",
-        "color": "blue",
-    },
-    {
-        "x": 4,
-        "y": 65,
-        "w": 1677,
-        "h": 793,
+        "x": 4 + 500,
+        "y": 65 ,
+        "w": 1000 + 500,
+        "h": 550 ,
         "code": "",
+        "down": "window.isDragging = true; window.draggedButton = window.botonActual",
         "init": "",
         "color": "green",
         "process": 1,
@@ -127,6 +123,54 @@ function drawButton(color, x,y,width,height,text,code,initCode) {
     ctx.textAlign = "center";
     ctx.fillText(text, x + width / 2, y + height / 2 + 7);
 }
+// activate when mouse down
+window.addEventListener('mousedown', function(event) {
+
+  window.buttondown = true;
+
+  const rect = canvas.getBoundingClientRect();
+  const clickX = event.clientX - rect.left;
+  const clickY = event.clientY - rect.top;
+
+  for(let i = buttons.length - 1; i >= 0; i--){
+    const actualwidth = buttons[i].w - buttons[i].x;
+    const actualheight = buttons[i].h - buttons[i].y;
+
+    if(clickX >= buttons[i].x && clickX <= (buttons[i].x + actualwidth) && 
+        clickY >= buttons[i].y && clickY <= (buttons[i].y + actualheight)) {
+      window.botonActual = buttons[i];
+      eval(buttons[i].down);
+      return; // stop execution once hit found
+    }
+  }
+
+});
+
+window.addEventListener('mouseup', function(event) {
+    window.buttondown = false;
+    window.isDragging = false;
+    window.draggedButton = null;
+});
+
+
+window.addEventListener('mousemove', function(event) {
+  const rect = canvas.getBoundingClientRect();
+window.xmg = event.clientX - rect.left;
+    window.ymg = event.clientY - rect.top;
+if (window.isDragging && window.draggedButton) {
+        const halfWidth = (window.draggedButton.w - window.draggedButton.x) / 2;
+        const halfHeight = (window.draggedButton.h - window.draggedButton.y) / 2;
+
+        const currentW = window.draggedButton.w - window.draggedButton.x;
+        const currentH = window.draggedButton.h - window.draggedButton.y;
+
+        window.draggedButton.x = window.xmg - halfWidth;
+        window.draggedButton.y = window.ymg - halfHeight;
+
+        window.draggedButton.w = window.draggedButton.x + currentW;
+        window.draggedButton.h = window.draggedButton.y + currentH;
+    }
+});
 
 canvas.addEventListener('click', function(event) {
     const rect = canvas.getBoundingClientRect();
