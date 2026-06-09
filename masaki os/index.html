@@ -1,5 +1,5 @@
 <canvas id="canvas" style="width: 100%; height: 100%;"></canvas>
-<canvas id="process" style="width: 100%; height: 100%; display: none;"></canvas>
+<canvas id="process" style="width: 100%; height: 100%; display:none "></canvas>
 
 <script>
   //get image from process and apply it to window.img
@@ -8,16 +8,23 @@
   processCanvas.width = window.innerWidth;
   processCanvas.height = window.innerHeight;
   
-  // draw a circle
   processCtx.fillStyle = 'red';
   processCtx.beginPath();
 
   processCtx.arc(150, 150, 50, 0, Math.PI * 2);
   processCtx.fill();
 
-  // convert canvas to image and set to window.img
-  window.img = processCanvas.toDataURL();
-
+  contador = 0;
+  // ADD some sorth of animation to it
+  const intervalx = setInterval(() => {
+     contador += 1;
+    processCtx.clearRect(0, 0, processCanvas.width, processCanvas.height);
+    processCtx.fillStyle = 'red';
+    processCtx.beginPath();
+    // move a square across the screen top to bottom
+    processCtx.rect(100 + contador, 100 + contador, 50, 50);
+    processCtx.fill();
+  }, 1);
 
 </script>
 
@@ -54,7 +61,7 @@ var buttons = [
         "w": 1677,
         "h": 793,
         "code": "",
-        "init": "let img = new Image(); img.onload = function() { ctx.drawImage(img, window.botonActual.x, window.botonActual.y, window.botonActual.w - window.botonActual.x, window.botonActual.h - window.botonActual.y); }; img.src = window.img;",
+        "init": "(function(btn){ const w = btn.w - btn.x; const h = btn.h - btn.y; setInterval(() => { ctx.clearRect(btn.x, btn.y, w, h); ctx.fillStyle = 'green'; ctx.fillRect(btn.x, btn.y, w, h); ctx.fillStyle = 'white'; ctx.font = '20px Arial'; ctx.textAlign = 'center'; ctx.fillText('New Button', btn.x + w / 2, btn.y + h / 2 + 7); /* Direct canvas stamp */ ctx.drawImage(processCanvas, btn.x, btn.y, w, h); }, 1); })(buttons[i]);",
         "color": "green",
     }
 
