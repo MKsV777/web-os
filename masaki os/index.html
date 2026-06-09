@@ -60,15 +60,6 @@ var buttons = [
         "init": "",
         "color": "green",
         "process": 1,
-    },{
-        "x": 613,
-        "y": 725,
-        "w": 670,
-        "h": 785,
-        "code": '',
-        "init": "",
-        "color": "#B2BEB5",
-        "text": "ico",
     }
 
 ];
@@ -82,6 +73,7 @@ var buttons = [
     }
 */
 
+// REPLACE your loop generation block with this:
 for(let i=0; i<4; i++) {
   buttons.push({
     "x": 613 + i*100,
@@ -89,8 +81,8 @@ for(let i=0; i<4; i++) {
     "w": 670 + i*100,
     "h": 785,
     "code": 'alert("button ' + (i + 1) + ' clicked!");',
-    "init": `let img = new Image(); img.src = './public/placeholder.svg'; img.onload = function() { buttons[${i + 2}].loadedImg = img; };`,
-    "color": "#B2BEB5",
+    "init": `let img = new Image(); img.src = './public/placeholder.svg'; img.onload = function() { buttons[buttons.length - ${4 - i}].loadedImg = img; };`,
+    "color": "white",
     "text": "ico",
     "down": ""
   });   
@@ -160,9 +152,12 @@ window.addEventListener('mousedown', function(event) {
     if(clickX >= buttons[i].x && clickX <= (buttons[i].x + actualwidth) && 
         clickY >= buttons[i].y - 0 && clickY <= (buttons[i].y - 0 + actualheight)) {
       window.botonActual = buttons[i];
-      eval(buttons[i].down);
+      if (buttons[i].down) {
+        eval(buttons[i].down);
+      }
       return; // stop execution once hit found
     }
+    
   }
 
 });
