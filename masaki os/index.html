@@ -19,12 +19,18 @@
   const intervalx = setInterval(() => {
      contador += 1;
     processCtx.clearRect(0, 0, processCanvas.width, processCanvas.height);
+
     processCtx.fillStyle = 'red';
     processCtx.beginPath();
+    processCtx.rect( 50,contador % processCanvas.height, 100, 100);
+    processCtx.fill();
+
+    processCtx.fillStyle = 'gray';
+    processCtx.beginPath();
+    processCtx.rect( 0,0, 1800, 147-50);
     // move a square across the screen top to bottom
     if(contador > processCanvas.height) contador = 0;
-    processCtx.rect( 50,contador % processCanvas.height, 100, 100);
-    processCtx.rect( 0,0, 1800, 100);
+
     processCtx.fill();
   }, 1);
 
@@ -134,10 +140,10 @@ window.addEventListener('mousedown', function(event) {
 
   for(let i = buttons.length - 1; i >= 0; i--){
     const actualwidth = buttons[i].w - buttons[i].x;
-    const actualheight = buttons[i].h - buttons[i].y;
+    const actualheight = buttons[i].h - buttons[i].y -450;
 
     if(clickX >= buttons[i].x && clickX <= (buttons[i].x + actualwidth) && 
-        clickY >= buttons[i].y - 400 && clickY <= (buttons[i].y - 400 + actualheight)) {
+        clickY >= buttons[i].y - 0 && clickY <= (buttons[i].y - 0 + actualheight)) {
       window.botonActual = buttons[i];
       eval(buttons[i].down);
       return; // stop execution once hit found
