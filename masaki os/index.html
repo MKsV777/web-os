@@ -1,4 +1,25 @@
 <canvas id="canvas" style="width: 100%; height: 100%;"></canvas>
+<canvas id="process" style="width: 100%; height: 100%; display: none;"></canvas>
+
+<script>
+  //get image from process and apply it to window.img
+  const processCanvas = document.getElementById('process');
+  const processCtx = processCanvas.getContext('2d');
+  processCanvas.width = window.innerWidth;
+  processCanvas.height = window.innerHeight;
+  
+  // draw a circle
+  processCtx.fillStyle = 'red';
+  processCtx.beginPath();
+
+  processCtx.arc(150, 150, 50, 0, Math.PI * 2);
+  processCtx.fill();
+
+  // convert canvas to image and set to window.img
+  window.img = processCanvas.toDataURL();
+
+
+</script>
 
 <script>
   const canvas = document.getElementById('canvas');
@@ -17,7 +38,28 @@ img.addEventListener("load", () => {
 });*/
 
 var buttons = [
+
     {
+        "x": 4,
+        "y": 13,
+        "w": 1677,
+        "h": 67,
+        "code": "",
+        "init": "",
+        "color": "blue",
+    },
+    {
+        "x": 4,
+        "y": 65,
+        "w": 1677,
+        "h": 793,
+        "code": "",
+        "init": "let img = new Image(); img.onload = function() { ctx.drawImage(img, window.botonActual.x, window.botonActual.y, window.botonActual.w - window.botonActual.x, window.botonActual.h - window.botonActual.y); }; img.src = window.img;",
+        "color": "green",
+    }
+
+];
+/*    {
         "x": 613,
         "y": 725,
         "w": 670,
@@ -25,15 +67,14 @@ var buttons = [
         "code": "alert('test');",
         "init": "let img = new Image(); img.onload = function() { ctx.drawImage(img, window.botonActual.x, window.botonActual.y, window.botonActual.w - window.botonActual.x, window.botonActual.h - window.botonActual.y); }; img.src = \"./public/placeholder.svg\";"
     }
-];
-
+*/
 
 window.onload = function() {
     for(let i=0; i<buttons.length; i++) {
         window.botonActual = buttons[i];
         eval(buttons[i].init);
-        // please gray
-        drawButton("#B2BEB5", buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y, "New Button");
+      
+        drawButton(buttons[i].color, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y, "New Button");
     }
 };
 
