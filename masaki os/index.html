@@ -22,7 +22,9 @@
     processCtx.fillStyle = 'red';
     processCtx.beginPath();
     // move a square across the screen top to bottom
-    processCtx.rect(100 + contador, 100 + contador, 50, 50);
+    if(contador > processCanvas.height) contador = 0;
+    processCtx.rect(0,contador % processCanvas.height, 100, 100);
+    processCtx.rect(0,0, 100, 100);
     processCtx.fill();
   }, 1);
 
@@ -51,7 +53,7 @@ var buttons = [
         "y": 13,
         "w": 1677,
         "h": 67,
-        "code": "",
+        "code": "buttons[0].x = window.xm; ",
         "init": "",
         "color": "blue",
     },
@@ -61,8 +63,9 @@ var buttons = [
         "w": 1677,
         "h": 793,
         "code": "",
-        "init": "(function(btn){ const w = btn.w - btn.x; const h = btn.h - btn.y; setInterval(() => { ctx.clearRect(btn.x, btn.y, w, h); ctx.fillStyle = 'green'; ctx.fillRect(btn.x, btn.y, w, h); ctx.fillStyle = 'white'; ctx.font = '20px Arial'; ctx.textAlign = 'center'; ctx.fillText('New Button', btn.x + w / 2, btn.y + h / 2 + 7); /* Direct canvas stamp */ ctx.drawImage(processCanvas, btn.x, btn.y, w, h); }, 1); })(buttons[i]);",
+        "init": "",
         "color": "green",
+        "process": 1,
     }
 
 ];
@@ -144,4 +147,19 @@ canvas.addEventListener('click', function(event) {
     window.xm = clickX;
     window.ym = clickY;
 });
+
+const interz = setInterval(() =>{
+  ctx.clearRect(0, 0, processCanvas.width, processCanvas.height);
+  for(let i=0; i<buttons.length; i++) {
+    drawButton(buttons[i].color, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y, "New Button");
+  }
+  // draw every process that is on the buttons, draw a each process(canvas) on top of the buttons that have it
+  for(let i=0; i<buttons.length; i++) {
+    if(buttons[i].process) {
+      ctx.drawImage(processCanvas, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y);
+    }
+  }
+
+}, 1);
+
 </script>
