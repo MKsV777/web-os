@@ -96,7 +96,7 @@ for(let i=0; i<4; i++) {
     "y": 725,
     "w": 670 + i*100,
     "h": 785,
-    "code": '',
+    "code": 'alert("button ' + (i + 1) + ' clicked!");',
     "init": `let img = new Image(); img.src = './public/placeholder.svg'; img.onload = function() { buttons[${i + 2}].loadedImg = img; };`,
     "color": "#B2BEB5",
     "text": "ico",
@@ -209,14 +209,17 @@ canvas.addEventListener('click', function(event) {
     let clicked = false;
 
     for(let i = 0; i < buttons.length; i++){
-        if (clickX >= buttons[i].x && clickX <= (buttons[i].x + buttons[i].w) && 
-            clickY >= buttons[i].y && clickY <= (buttons[i].y + buttons[i].h)) {
+        const actualwidth = buttons[i].w - buttons[i].x;
+        const actualheight = buttons[i].h - buttons[i].y;
+
+        if (clickX >= buttons[i].x && clickX <= (buttons[i].x + actualwidth) && 
+        clickY >= buttons[i].y && clickY <= (buttons[i].y + actualheight)) {
           //alert("Dynamic Button " + (i + 1) + " clicked!");
           window.botonActual = buttons[i];
           eval(buttons[i].code);
           return; // stop execution once hit found
-        }
       }
+    }
     window.xm = clickX;
     window.ym = clickY;
 });
