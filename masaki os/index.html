@@ -5,7 +5,7 @@
     overflow: hidden; /* kil the scrolling bars*/
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(0deg, #c9eed4 0%, #cbe1ed 100%)
+    background: linear-gradient(0deg, #39107B 0%, #880015 100%)
   }
 </style>
 
@@ -42,54 +42,64 @@ img.addEventListener("load", () => {
 
 var buttons = [
   {
-    "x": 10,
-    "y": 15,
-    "w": 1520,
-    "h": 80,
+    "x": 0,
+    "y": 0,
+    "w": 0,
+    "h": 0,
     "code": "",
     "init": "",
-    "color": "orange",
+    "color": "#39107B",
     "text": ""
   },
   {
-    "x": 100,
-    "y": 100,
-    "w": 844,
-    "h": 439.19999998807907,
+    "x": -200,
+    "y": 0,
+    "w": 890,
+    "h": 740,
     "code": "",
     "init": "let img = new Image(); img.src = '/webos.png'; img.onload = function() { ctx.drawImage(img, buttons[1].x, buttons[1].y, buttons[1].w - buttons[1].x, buttons[1].h - buttons[1].y); };",
     "color": "white",
     "text": "image"
   },
   {
-    "x": 900,
-    "y": 100,
-    "w": 1384.7999997138977,
-    "h": 290,
+    "x": 890,
+    "y": 0,
+    "w": canvas.width,
+    "h": 300,
     "code": "",
     "init": "",
-    "color": "orange",
-    "text": "Masaki OS \n \n better window managing for your \n web apps"
+    "color": "rgba(127, 17, 224, .3)",
+    "text": "\n \n Masaki OS \n \n better window managing for your \n web apps"
   },
   {
-    "x": 1005,
+    "x": 0 + canvas.width/20 *11.7,
     "y": 300,
-    "w": 1200,
-    "h": 390,
+    "w": 195 + canvas.width/20 * 17.4,
+    "h": 400,
     "code": "window.location.replace('https://web-os-six-xi.vercel.app/web.html');",
     "init": "",
-    "color": "green",
+    "color": "rgba(126,0, 0, .4)",
     "text": "start using NOW!"
   },
   {
-    "x": 1005,
+    "x": 0 + canvas.width/20 *11.7,
     "y": 400,
-    "w": 1200,
-    "h": 490,
+    "w": 195 + canvas.width/20 * 17.4,
+    "h": 500,
     "code": "const editor = document.getElementById('turn'); editor.style.display = (editor.style.display === 'block') ? 'none' : 'block';",
     "init": "",
-    "color": "green",
+    "color": "rgba(0,0, 126, .3)",
     "text": "use ui editor"
+  },
+  {
+    "x": 0 + canvas.width/20 * 12,
+    "y": 120,
+    "w": 0 + canvas.width/20 * 13.4,
+    "h": 230,
+    "code": "",
+    "init": "let imgx = new Image(); imgx.src = '/placeholder.png'; imgx.onload = function() { ctx.drawImage(imgx, buttons[5].x, buttons[5].y, buttons[5].w - buttons[5].x, buttons[5].h - buttons[5].y); };",
+    "color": "white",
+    "text": "image"
   }
 ];
 
