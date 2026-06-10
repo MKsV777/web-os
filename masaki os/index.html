@@ -80,7 +80,7 @@ var buttons = [
         "w": 670,
         "h": 785,
         "code": "alert('test');",
-        "init": "let img = new Image(); img.onload = function() { ctx.drawImage(img, window.botonActual.x, window.botonActual.y, window.botonActual.w - window.botonActual.x, window.botonActual.h - window.botonActual.y); }; img.src = \"./public/placeholder.svg\";"
+        "init": "let img = new Image(); img.onload = function() { ctx.drawImage(img, window.botonActual.x, window.botonActual.y, window.botonActual.w - window.botonActual.x, window.botonActual.h - window.botonActual.y); }; img.src = \"/placeholder.svg\";"
     }
 */
 
@@ -92,7 +92,7 @@ for(let i=0; i<4; i++) {
     "w": 670 + i*100,
     "h": 785,
     "code": 'processes["process1"].display = !processes["process1"].display; processes["process1"].x = window.botonActual.x; processes["process1"].y = window.botonActual.y; if(processes["process1"].display) { buttons[0].x += 10000000; buttons[0].w += 10000000} else { buttons[0].x -= 10000000; buttons[0].w -= 10000000};',
-    "init": `let img = new Image(); img.src = './public/placeholder.svg'; img.onload = function() { buttons[buttons.length - ${4 - i}].loadedImg = img; };`,
+    "init": `let img = new Image(); img.src = '/placeholder.svg'; img.onload = function() { buttons[buttons.length - ${4 - i}].loadedImg = img; };`,
     "color": "white",
     "text": "ico",
     "down": ""
@@ -224,7 +224,7 @@ canvas.addEventListener('click', function(event) {
 
   let bkg = new Image();
 
-  bkg.src = "./public/background.svg";
+  bkg.src = "/background.svg";
 const interz = setInterval(() =>{
 
   ctx.clearRect(0, 0, processCanvas.width, processCanvas.height);
