@@ -31,19 +31,30 @@
 
     processCtx.fillStyle = 'red';
     processCtx.beginPath();
-    processCtx.rect( 50,contador % processCanvas.height, 100, 100);
+    //processCtx.rect( 50,contador % processCanvas.height, 100, 100);
     processCtx.fill();
 
     processCtx.fillStyle = 'gray';
     processCtx.beginPath();
-    processCtx.rect( 0,0, 1800, 147-50);
+    processCtx.rect( 0,0, 1800, 48.5);
 
     processCtx.rect( 100, 100, 100, 100);
+    processCtx.rect( canvas.width/2-400, canvas.height/2 - 250, 1150, 600);
+    
+    processCtx.fill();
+    processCtx.beginPath();                  // Resets the path so text is independent
+    processCtx.fillStyle = 'black';          // Text color
+    processCtx.font = '20px Arial';          // Font style
+    processCtx.textAlign = 'left';
+    
+    // 150 is the X position, 150 is the Y position
+    processCtx.fillText("system files", 100, 152);
 
     // move a square across the screen top to bottom
     if(contador > processCanvas.height) contador = 0;
-
+    
     processCtx.fill();
+
   }, 1);
 
 </script>
@@ -106,8 +117,7 @@ for(let i=0; i<4; i++) {
     "y": 650,
     "w": 670 + (i*100) + 10,
     "h": 710,
-    "code": 'processes["process1"].display = !processes["process1"].display; processes["process1"].x = window.botonActual.x; processes["process1"].y = window.botonActual.y; if(processes["process1"].display) { buttons[0].x += 10000000; buttons[0].w += 10000000} else { buttons[0].x -= 10000000; buttons[0].w -= 10000000};',
-    "init": `let img = new Image(); img.src = '/ico${i+1}.svg'; img.onload = function() { buttons[${absoluteIndex}].loadedImg = img; };`,
+    "code": i === 0 ? `processes["process${i+1}"].display = !processes["process${i+1}"].display; processes["process${i+1}"].x = window.botonActual.x; processes["process${i+1}"].y = window.botonActual.y; if(processes["process${i+1}"].display) { buttons[0].x += 10000000; buttons[0].w += 10000000} else { buttons[0].x -= 10000000; buttons[0].w -= 10000000};` : '',    "init": `let img = new Image(); img.src = '/ico${i+1}.svg'; img.onload = function() { buttons[${absoluteIndex}].loadedImg = img; };`,
     "color": "white",
     "text": "ico",
     "down": ""
@@ -175,7 +185,7 @@ window.addEventListener('mousedown', function(event) {
 
   for(let i = buttons.length - 1; i >= 0; i--){
     const actualwidth = buttons[i].w - buttons[i].x;
-    const actualheight = buttons[i].h - buttons[i].y ;
+    const actualheight = buttons[i].h - buttons[i].y - 450;
 
     if(clickX >= buttons[i].x && clickX <= (buttons[i].x + actualwidth) && 
         clickY >= buttons[i].y - 0 && clickY <= (buttons[i].y - 0 + actualheight)) {
