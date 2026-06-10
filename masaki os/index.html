@@ -5,12 +5,13 @@
     overflow: hidden; /* kil the scrolling bars*/
     width: 100vw;
     height: 100vh;
+    background: linear-gradient(0deg, #c9eed4 0%, #cbe1ed 100%)
   }
 </style>
 
 <div style="position: relative; width: 100vw; height: 100vh; overflow: hidden;">
   
-  <canvas id="canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #4c7eda; z-index: 0;"></canvas>
+  <canvas id="canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
   
   <div id="turn" style="position: absolute; top: 0; right: 0; width: 30%; height: 100%; background: rgba(221, 221, 221, 0.2); box-sizing: border-box; padding: 10px; z-index: 100; pointer-events: none; display: none">
     
@@ -57,7 +58,7 @@ var buttons = [
     "h": 439.19999998807907,
     "code": "",
     "init": "let img = new Image(); img.src = '/webos.png'; img.onload = function() { ctx.drawImage(img, buttons[1].x, buttons[1].y, buttons[1].w - buttons[1].x, buttons[1].h - buttons[1].y); };",
-    "color": "green",
+    "color": "white",
     "text": "image"
   },
   {
