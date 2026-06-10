@@ -11,6 +11,8 @@ some ai was used
 
 - github copilot autocomplete was used, all logic was reviewed
   by me, so it should not affect the code quality.
+- i also used gemini to fix some bugs,
+  i admit my mess is app is a mess so might refactor code in the future
 
 ----------------------------------
 how to deploy?

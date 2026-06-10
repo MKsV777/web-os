@@ -1,50 +1,18 @@
-<canvas id="canvas" style="width: 100%; height: 100%;"></canvas>
-<canvas id="process" style="width: 100%; height: 100%; display:none "></canvas>
-
-<script>
-
-  window.processes = {
-    "process1": {
-      "display" : true,
-      "x": 0,
-      "y": 0,
-    }
-  }
+<div style="position: relative; width: 100vw; height: 100vh; overflow: hidden;">
   
-  //get image from process and apply it to window.img
-  const processCanvas = document.getElementById('process');
-  const processCtx = processCanvas.getContext('2d');
-  processCanvas.width = window.innerWidth;
-  processCanvas.height = window.innerHeight;
+  <canvas id="canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #0055ff; z-index: 0;"></canvas>
   
-  processCtx.fillStyle = 'red';
-  processCtx.beginPath();
+  <div id="turn" style="position: absolute; top: 0; right: 0; width: 30%; height: 100%; background: rgba(221, 221, 221, 0.2); box-sizing: border-box; padding: 10px; z-index: 100; pointer-events: none; display: none">
+    
+    <textarea id="textearea" style="width: 100%; height: 30%; resize: none; box-sizing: border-box; pointer-events: auto; background: transparent; color: white; border: 1px solid white; font-family: monospace;"></textarea>
+    
+    <button onclick="const textarea = document.getElementById('textearea'); buttons = JSON.parse(textarea.value); ctx.clearRect(0,0,canvas.width,canvas.height); for(let i=0; i<buttons.length; i++) drawButton(buttons[i].color, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y, buttons[i].text);" 
+            style="pointer-events: auto; width: 100%; margin-top: 5px; background: transparent; color: white; border: 1px solid white; padding: 5px; cursor: pointer;">
+      sync
+    </button>
+  </div>
 
-  processCtx.arc(150, 150, 50, 0, Math.PI * 2);
-  processCtx.fill();
-
-  contador = 0;
-  // ADD some sorth of animation to it
-  const intervalx = setInterval(() => {
-     contador += 1;
-    processCtx.clearRect(0, 0, processCanvas.width, processCanvas.height);
-
-    processCtx.fillStyle = 'red';
-    processCtx.beginPath();
-    processCtx.rect( 50,contador % processCanvas.height, 100, 100);
-    processCtx.fill();
-
-    processCtx.fillStyle = 'gray';
-    processCtx.beginPath();
-    processCtx.rect( 0,0, 1800, 147-50);
-    // move a square across the screen top to bottom
-    if(contador > processCanvas.height) contador = 0;
-
-    processCtx.fill();
-  }, 1);
-
-</script>
-
+</div>
 <script>
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
@@ -52,60 +20,90 @@
   // Set canvas size to fill the window
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+/*
+  const img = new Image();
 
-  window.isDragging = false;
-  window.draggedButton = null;
-  window.xmg = 0;
-  window.ymg = 0;
+  img.src ="./public/placeholder.svg";
 
-  
+img.addEventListener("load", () => {
+  ctx.drawImage(img, 0, 0);
+});*/
+
 var buttons = [
-    {
-        "x": 4 + 500,
-        "y": 65 ,
-        "w": 1000 + 500,
-        "h": 550 ,
-        "code": "",
-        "down": 'window.isDragging = true; window.draggedButton = window.botonActual',
-        "init": "",
-        "color": "green",
-        "process": 1,
-        "text": ""
-    }
-
+  {
+    "x": 10,
+    "y": 15,
+    "w": 1520,
+    "h": 80,
+    "code": "",
+    "init": "",
+    "color": "orange",
+    "text": ""
+  },
+  {
+    "x": 100,
+    "y": 100,
+    "w": 844,
+    "h": 439.19999998807907,
+    "code": "",
+    "init": "",
+    "color": "green",
+    "text": "image"
+  },
+  {
+    "x": 900,
+    "y": 100,
+    "w": 1384.7999997138977,
+    "h": 290,
+    "code": "",
+    "init": "",
+    "color": "orange",
+    "text": "Masaki OS \n \n better window managing for your \n web apps"
+  },
+  {
+    "x": 1005,
+    "y": 300,
+    "w": 1200,
+    "h": 390,
+    "code": "",
+    "init": "",
+    "color": "green",
+    "text": "start using NOW!"
+  },
+  {
+    "x": 1240,
+    "y": 300,
+    "w": 1350,
+    "h": 390,
+    "code": "",
+    "init": "",
+    "color": "green",
+    "text": "browse\nthe\nstore"
+  },
+  {
+    "x": 1005,
+    "y": 400,
+    "w": 1200,
+    "h": 490,
+    "code": "const editor = document.getElementById('turn'); editor.style.display = (editor.style.display === 'block') ? 'none' : 'block';",
+    "init": "",
+    "color": "green",
+    "text": "use ui editor"
+  }
 ];
-/*    {
-        "x": 613,
-        "y": 725,
-        "w": 670,
-        "h": 785,
-        "code": "alert('test');",
-        "init": "let img = new Image(); img.onload = function() { ctx.drawImage(img, window.botonActual.x, window.botonActual.y, window.botonActual.w - window.botonActual.x, window.botonActual.h - window.botonActual.y); }; img.src = \"/placeholder.svg\";"
-    }
-*/
 
-// REPLACE your loop generation block with this:
-for(let i=0; i<4; i++) {
-  buttons.push({
-    "x": 613 + i*100,
-    "y": 600,
-    "w": 670 + i*100,
-    "h": 660,
-    "code": 'processes["process1"].display = !processes["process1"].display; processes["process1"].x = window.botonActual.x; processes["process1"].y = window.botonActual.y; if(processes["process1"].display) { buttons[0].x += 10000000; buttons[0].w += 10000000} else { buttons[0].x -= 10000000; buttons[0].w -= 10000000};',
-    "init": `let img = new Image(); img.src = '/placeholder.svg'; img.onload = function() { buttons[buttons.length - ${4 - i}].loadedImg = img; };`,
-    "color": "white",
-    "text": "ico",
-    "down": ""
-  });   
+function updatetextarea(){
+  const textarea = document.getElementById('textearea');
+  textarea.value = JSON.stringify(buttons, null, 2);
 }
 
 window.onload = function() {
     for(let i=0; i<buttons.length; i++) {
         window.botonActual = buttons[i];
         eval(buttons[i].init);
-      
-        drawButton(buttons[i].color, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y, buttons[i].text, buttons[i].code, buttons[i].init);
+        drawButton(buttons[i].color, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y, buttons[i].text);
     }
+    updatetextarea();
 };
 
 // i should press click, letter x then click and then another click and then another letter to get data
@@ -116,88 +114,42 @@ document.onkeypress = function (e) {
 
 document.addEventListener('keydown', (event) => {
   // event.key devuelve la letra o tecla presionada
-  if (event.key === 'x') {
+  if (event.key === '.') {
     window.h = window.ym;
     window.w = window.xm;
-  }else if(event.key === 'c') {
+  }else if(event.key === ',') {
     window.addbutton();
-  }else if(event.key === 's'){
+  }else if(event.key === '¡'){
     console.log(buttons);
   }
 });
 
 window.addbutton = () => {
-    color = prompt("color:");
-    if(color == null) color = "#B2BEB5";
-    textx = prompt("text:");
-    codexc = prompt("init js:");
-    codex = prompt("click js:");
-    buttons.push({x: window.xm, y: window.ym, w: window.w, h: window.h, code: codex, init: codexc, text: textx, color: color});
-    drawButton(color, window.xm, window.ym, window.w - window.xm, window.h - window.ym, textx, codex, codexc);
+    codexc = "";
+    codex = "";
+    colorx = prompt("color");
+    textxd = prompt("text");
+    buttons.push({x: window.xm, y: window.ym, w: window.w, h: window.h, code: codex, init: codexc, color: colorx, text: textxd});
+    drawButton(colorx, window.xm, window.ym, window.w - window.xm, window.h - window.ym, textxd, codex, codexc);
     window.botonActual = buttons[buttons.length - 1];
     eval(buttons[buttons.length - 1].init);
+    updatetextarea();
 };
 
-function drawButton(color, x,y,width,height,text,code,initCode) {
+function drawButton(color, x,y,width,height,text,code,initCode,) {
     ctx.fillStyle = color;
-    ctx.fillRect(x, y, width, height);
-    
+    ctx.fillRect(x, y, width, height);    
     ctx.fillStyle = "white";
     ctx.font = "20px Arial";
     ctx.textAlign = "center";
-    ctx.fillText(text, x + width / 2, y + height / 2 + 7);
+    const lines = (text || "").split('\n');
+    const lineHeight = 24;
+    const totalTextHeight = lines.length * lineHeight;
+    let startY = y + (height / 2) - (totalTextHeight / 2) + (lineHeight / 2) + 4;
+    for (let i = 0; i < lines.length; i++) {
+      ctx.fillText(lines[i], x + width / 2, startY + (i * lineHeight));
+    }
 }
-// activate when mouse down
-window.addEventListener('mousedown', function(event) {
-
-  window.buttondown = true;
-
-  const rect = canvas.getBoundingClientRect();
-  const clickX = event.clientX - rect.left;
-  const clickY = event.clientY - rect.top;
-
-  for(let i = buttons.length - 1; i >= 0; i--){
-    const actualwidth = buttons[i].w - buttons[i].x;
-    const actualheight = buttons[i].h - buttons[i].y -450;
-
-    if(clickX >= buttons[i].x && clickX <= (buttons[i].x + actualwidth) && 
-        clickY >= buttons[i].y - 0 && clickY <= (buttons[i].y - 0 + actualheight)) {
-      window.botonActual = buttons[i];
-      if (buttons[i].down) {
-        eval(buttons[i].down);
-      }
-      return; // stop execution once hit found
-    }
-    
-  }
-
-});
-
-window.addEventListener('mouseup', function(event) {
-    window.buttondown = false;
-    window.isDragging = false;
-    window.draggedButton = null;
-});
-
-
-window.addEventListener('mousemove', function(event) {
-  const rect = canvas.getBoundingClientRect();
-window.xmg = event.clientX - rect.left;
-    window.ymg = event.clientY - rect.top;
-if (window.isDragging && window.draggedButton) {
-        const halfWidth = (window.draggedButton.w - window.draggedButton.x) / 2;
-        const halfHeight = (window.draggedButton.h - window.draggedButton.y) / 2 - 200;
-
-        const currentW = window.draggedButton.w - window.draggedButton.x;
-        const currentH = window.draggedButton.h - window.draggedButton.y;
-
-        window.draggedButton.x = window.xmg - halfWidth;
-        window.draggedButton.y = window.ymg - halfHeight;
-
-        window.draggedButton.w = window.draggedButton.x + currentW;
-        window.draggedButton.h = window.draggedButton.y + currentH;
-    }
-});
 
 canvas.addEventListener('click', function(event) {
     const rect = canvas.getBoundingClientRect();
@@ -207,48 +159,15 @@ canvas.addEventListener('click', function(event) {
     let clicked = false;
 
     for(let i = 0; i < buttons.length; i++){
-        const actualwidth = buttons[i].w - buttons[i].x;
-        const actualheight = buttons[i].h - buttons[i].y;
-
-        if (clickX >= buttons[i].x && clickX <= (buttons[i].x + actualwidth) && 
-        clickY >= buttons[i].y && clickY <= (buttons[i].y + actualheight)) {
+        if (clickX >= buttons[i].x && clickX <= (buttons[i].x + buttons[i].w) && 
+            clickY >= buttons[i].y && clickY <= (buttons[i].y + buttons[i].h)) {
           //alert("Dynamic Button " + (i + 1) + " clicked!");
           window.botonActual = buttons[i];
           eval(buttons[i].code);
           return; // stop execution once hit found
+        }
       }
-    }
     window.xm = clickX;
     window.ym = clickY;
 });
-
-  let bkg = new Image();
-
-  bkg.src = "/background.svg";
-const interz = setInterval(() =>{
-
-  ctx.clearRect(0, 0, processCanvas.width, processCanvas.height);
-
-  let x = (canvas.width - bkg.width) / 2 * .0002 -300;
-  let y = (canvas.height- bkg.height)/ 2 * .0002 -90;
-
-  ctx.drawImage(bkg, x, y, canvas.width * 1.39, canvas.height * 1.2);
-  
-
-  for(let i=0; i<buttons.length; i++) {
-    if(buttons[i].loadedImg) {
-      ctx.drawImage(buttons[i].loadedImg, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y);
-    } else {
-      drawButton(buttons[i].color, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y, buttons[i].text, buttons[i].code, buttons[i].init);
-    }
-  }
-  // draw every process that is on the buttons, draw a each process(canvas) on top of the buttons that have it
-  for(let i=0; i<buttons.length; i++) {
-    if(buttons[i].process && window.processes["process" + buttons[i].process] && window.processes["process" + buttons[i].process].display) {
-      ctx.drawImage(processCanvas, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y);
-    }
-  }
-
-}, 1);
-
 </script>
