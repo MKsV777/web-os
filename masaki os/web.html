@@ -90,12 +90,12 @@ var buttons = [
 // REPLACE your loop generation block with this:
 for(let i=0; i<4; i++) {
   buttons.push({
-    "x": 613 + i*100,
-    "y": 600,
-    "w": 670 + i*100,
-    "h": 660,
+    "x": 613 + (i*100),
+    "y": 650,
+    "w": 670 + (i*100) + 10,
+    "h": 710,
     "code": 'processes["process1"].display = !processes["process1"].display; processes["process1"].x = window.botonActual.x; processes["process1"].y = window.botonActual.y; if(processes["process1"].display) { buttons[0].x += 10000000; buttons[0].w += 10000000} else { buttons[0].x -= 10000000; buttons[0].w -= 10000000};',
-    "init": `let img = new Image(); img.src = '/placeholder.svg'; img.onload = function() { buttons[buttons.length - ${4 - i}].loadedImg = img; };`,
+    "init": `let img = new Image(); img.src = '/ico${i+1}.svg'; img.onload = function() { buttons[buttons.length - ${4 - i}].loadedImg = img; };`,
     "color": "white",
     "text": "ico",
     "down": ""
