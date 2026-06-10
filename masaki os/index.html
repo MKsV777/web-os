@@ -1,6 +1,16 @@
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* kil the scrolling bars*/
+    width: 100vw;
+    height: 100vh;
+  }
+</style>
+
 <div style="position: relative; width: 100vw; height: 100vh; overflow: hidden;">
   
-  <canvas id="canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #0055ff; z-index: 0;"></canvas>
+  <canvas id="canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #4c7eda; z-index: 0;"></canvas>
   
   <div id="turn" style="position: absolute; top: 0; right: 0; width: 30%; height: 100%; background: rgba(221, 221, 221, 0.2); box-sizing: border-box; padding: 10px; z-index: 100; pointer-events: none; display: none">
     
@@ -46,7 +56,7 @@ var buttons = [
     "w": 844,
     "h": 439.19999998807907,
     "code": "",
-    "init": "",
+    "init": "let img = new Image(); img.src = '/webos.png'; img.onload = function() { ctx.drawImage(img, buttons[1].x, buttons[1].y, buttons[1].w - buttons[1].x, buttons[1].h - buttons[1].y); };",
     "color": "green",
     "text": "image"
   },
@@ -65,20 +75,10 @@ var buttons = [
     "y": 300,
     "w": 1200,
     "h": 390,
-    "code": "",
+    "code": "window.location.replace('http://localhost:5173/web.html');",
     "init": "",
     "color": "green",
     "text": "start using NOW!"
-  },
-  {
-    "x": 1240,
-    "y": 300,
-    "w": 1350,
-    "h": 390,
-    "code": "",
-    "init": "",
-    "color": "green",
-    "text": "browse\nthe\nstore"
   },
   {
     "x": 1005,
