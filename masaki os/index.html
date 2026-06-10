@@ -159,8 +159,8 @@ canvas.addEventListener('click', function(event) {
     let clicked = false;
 
     for(let i = 0; i < buttons.length; i++){
-        if (clickX >= buttons[i].x && clickX <= (buttons[i].x + buttons[i].w) && 
-            clickY >= buttons[i].y && clickY <= (buttons[i].y + buttons[i].h)) {
+        if (clickX >= buttons[i].x && clickX <= (buttons[i].w) && 
+            clickY >= buttons[i].y && clickY <= (buttons[i].h)) {
           //alert("Dynamic Button " + (i + 1) + " clicked!");
           window.botonActual = buttons[i];
           eval(buttons[i].code);
