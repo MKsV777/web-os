@@ -8,6 +8,8 @@
       "display" : true,
       "x": 0,
       "y": 0,
+      "clickedX": 0,
+      "clickedY": 0,
     }
   }
   
@@ -28,10 +30,10 @@
   const intervalx = setInterval(() => {
      contador += 1;
     processCtx.clearRect(0, 0, processCanvas.width, processCanvas.height);
-
-    processCtx.fillStyle = 'red';
+    processCtx.fillStyle = '#ededed';
     processCtx.beginPath();
-    //processCtx.rect( 50,contador % processCanvas.height, 100, 100);
+    processCtx.rect( 0, 0, canvas.width, canvas.height);
+    
     processCtx.fill();
 
     processCtx.fillStyle = 'gray';
@@ -248,7 +250,17 @@ canvas.addEventListener('click', function(event) {
     }
     window.xm = clickX;
     window.ym = clickY;
-});
+
+  for(let l=0; l<buttons.length; l++) {
+    if(buttons[l].process && window.processes["process" + buttons[l].process] && window.processes["process" + buttons[l].process].display) {
+      if (buttons[l].x >= buttons[i].x && buttons[l].x <= (buttons[i].x + actualwidth) && 
+        buttons[l].y >= buttons[i].y && buttons[l].y <= (buttons[i].y + actualheight)) {
+        window.processes.clicked = true;
+        window.processes.clickedX = window.xm - buttons[i].x;
+        window.processes.clickedY = window.ym - buttons[i].y;
+    }
+    }}
+  });
 
   let bkg = new Image();
 
