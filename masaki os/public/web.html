@@ -86,21 +86,35 @@ var buttons = [
         "init": "let img = new Image(); img.onload = function() { ctx.drawImage(img, window.botonActual.x, window.botonActual.y, window.botonActual.w - window.botonActual.x, window.botonActual.h - window.botonActual.y); }; img.src = \"/placeholder.svg\";"
     }
 */
+buttons.push({
+    "x": 600 ,
+    "y": 640, 
+    "w": 1000,
+    "h": 730,
+    "code": '',
+    "init": `let img = new Image(); img.src = '/bar.svg'; img.onload = function() { buttons[1].loadedImg = img; };`,
+    "color": "white",
+    "text": "bar",
+    "down": ""
+  });
 
 // REPLACE your loop generation block with this:
 for(let i=0; i<4; i++) {
+  let absoluteIndex = buttons.length;
   buttons.push({
     "x": 613 + (i*100),
     "y": 650,
     "w": 670 + (i*100) + 10,
     "h": 710,
     "code": 'processes["process1"].display = !processes["process1"].display; processes["process1"].x = window.botonActual.x; processes["process1"].y = window.botonActual.y; if(processes["process1"].display) { buttons[0].x += 10000000; buttons[0].w += 10000000} else { buttons[0].x -= 10000000; buttons[0].w -= 10000000};',
-    "init": `let img = new Image(); img.src = '/ico${i+1}.svg'; img.onload = function() { buttons[buttons.length - ${4 - i}].loadedImg = img; };`,
+    "init": `let img = new Image(); img.src = '/ico${i+1}.svg'; img.onload = function() { buttons[${absoluteIndex}].loadedImg = img; };`,
     "color": "white",
     "text": "ico",
     "down": ""
   });   
 }
+
+
 
 window.onload = function() {
     for(let i=0; i<buttons.length; i++) {
@@ -161,7 +175,7 @@ window.addEventListener('mousedown', function(event) {
 
   for(let i = buttons.length - 1; i >= 0; i--){
     const actualwidth = buttons[i].w - buttons[i].x;
-    const actualheight = buttons[i].h - buttons[i].y -450;
+    const actualheight = buttons[i].h - buttons[i].y ;
 
     if(clickX >= buttons[i].x && clickX <= (buttons[i].x + actualwidth) && 
         clickY >= buttons[i].y - 0 && clickY <= (buttons[i].y - 0 + actualheight)) {
@@ -209,7 +223,8 @@ canvas.addEventListener('click', function(event) {
 
     let clicked = false;
 
-    for(let i = 0; i < buttons.length; i++){
+    for(let i = buttons.length - 1; i >= 0; i--){
+      if (i === 1) continue;
         const actualwidth = buttons[i].w - buttons[i].x;
         const actualheight = buttons[i].h - buttons[i].y;
 
