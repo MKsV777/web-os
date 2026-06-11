@@ -12,6 +12,7 @@
       "height": 485,
       "clickedX": 0,
       "clickedY": 0,
+      "clicked": false,
     }
   }
   
@@ -27,9 +28,13 @@
   processCtx.arc(150, 150, 50, 0, Math.PI * 2);
   processCtx.fill();
 
-  contador = 0;
-  // ADD some sorth of animation to it
+
+  let contador = 0;
   const intervalx = setInterval(() => {
+
+    if(window.processes.process1.clicked == true){
+      console.log("test");
+    }
      contador += 1;
     processCtx.clearRect(0, 0, processCanvas.width, processCanvas.height);
     processCtx.fillStyle = '#ededed';
@@ -203,27 +208,27 @@ window.addEventListener('mousedown', function(event) {
 
   for(let i = buttons.length - 1; i >= 0; i--){
     const actualwidth = buttons[i].w - buttons[i].x;
-    let actualheight; // This is the main variable
+    const actualheight = buttons[i].h - buttons[i].y;
     
-    if(i != 0){
-      // REMOVED 'const' - now it correctly updates the main variable
-      actualheight = buttons[i].h - buttons[i].y; 
-    }else{
-      // REMOVED 'const' - now it correctly updates the main variable
-      actualheight = buttons[i].h - buttons[i].y - 450; 
-    }
     
     // Now actualheight has its real value here and works perfectly!
     if(clickX >= buttons[i].x && clickX <= (buttons[i].x + actualwidth) && 
-        clickY >= buttons[i].y - 0 && clickY <= (buttons[i].y - 0 + actualheight)) {
+      clickY >= buttons[i].y && clickY <= (buttons[i].y + actualheight)) {
       window.botonActual = buttons[i];
       let processName = "process" + window.botonActual.process;
       if(window.processes[processName]) {
+        window.processes[processName].clicked = true;
         window.processes[processName].clickedX = clickX - window.botonActual.x;
         window.processes[processName].clickedY = clickY - window.botonActual.y;
       }
       if (buttons[i].down) {
-        eval(buttons[i].down);
+        if (i === 0) {
+          if (clickY <= buttons[i].y + 35) {
+            eval(buttons[i].down);
+          }
+        } else {
+          eval(buttons[i].down);
+        }
       }
       return; // stop execution once hit found
     }
@@ -231,9 +236,16 @@ window.addEventListener('mousedown', function(event) {
 });
 
 window.addEventListener('mouseup', function(event) {
-    window.buttondown = false;
-    window.isDragging = false;
-    window.draggedButton = null;
+  for(let l=0; l<buttons.length; l++) {
+
+    let processName = "process" + buttons[l].process;
+    if (buttons[l].process && window.processes[processName]) {
+      window.processes[processName].clicked = false;
+    }
+  }
+  window.buttondown = false;
+  window.isDragging = false;
+  window.draggedButton = null;
 });
 
 
@@ -292,18 +304,6 @@ canvas.addEventListener('click', function(event) {
     window.xm = clickX;
     window.ym = clickY;
 
-  for(let l=0; l<buttons.length; l++) {
-
-    const actualwidth = buttons[l].w - buttons[l].x;
-    const actualheight = buttons[l].h - buttons[l].y;
-    if(buttons[l].process && window.processes["process" + buttons[l].process] && window.processes["process" + buttons[l].process].display) {
-      if (buttons[l].x >= buttons[l].x && buttons[l].x <= (buttons[l].x + actualwidth) && 
-        buttons[l].y >= buttons[l].y && buttons[l].y <= (buttons[l].y + actualheight)) {
-        window.processes.clicked = true;
-        window.processes.clickedX = window.xm - buttons[l].x;
-        window.processes.clickedY = window.ym - buttons[l].y;
-    }
-    }}
   });
 
   let bkg = new Image();
@@ -311,7 +311,7 @@ canvas.addEventListener('click', function(event) {
   bkg.src = "/background.svg";
 const interz = setInterval(() =>{
 
-  ctx.clearRect(0, 0, processCanvas.width, processCanvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   let x = (canvas.width - bkg.width) / 2 * .0002 -300;
   let y = (canvas.height- bkg.height)/ 2 * .0002 -90;
