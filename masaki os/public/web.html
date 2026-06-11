@@ -6,8 +6,10 @@
   window.processes = {
     "process1": {
       "display" : true,
-      "x": 0,
-      "y": 0,
+      "x": 504,
+      "y": 65,
+      "width": 1000,
+      "height": 485,
       "clickedX": 0,
       "clickedY": 0,
     }
@@ -41,7 +43,7 @@
     processCtx.rect( 0,0, 1800, 48.5);
 
     processCtx.rect( 100, 100, 100, 100);
-    processCtx.rect( canvas.width/2-400, canvas.height/2 - 250, 1150, 600);
+    processCtx.rect(50, 65, canvas.width - 100, canvas.height - 150);
     
     processCtx.fill();
     processCtx.beginPath();                  // Resets the path so text is independent
@@ -90,6 +92,19 @@ var buttons = [
     }
 
 ];
+
+function updateprocesswindow(i, l){
+  let proc = window.processes[i];
+  if(proc && buttons[l]) {
+    proc.x = buttons[l].x;
+    proc.y = buttons[l].y;
+    proc.width = buttons[l].w - buttons[l].x;  // Synchronized to .width
+    proc.height = buttons[l].h - buttons[l].y; // Synchronized to .height
+  }
+}
+
+updateprocesswindow("process1", 0);
+
 /*    {
         "x": 613,
         "y": 725,
@@ -119,7 +134,8 @@ for(let i=0; i<4; i++) {
     "y": 650,
     "w": 670 + (i*100) + 10,
     "h": 710,
-    "code": i === 0 ? `processes["process${i+1}"].display = !processes["process${i+1}"].display; processes["process${i+1}"].x = window.botonActual.x; processes["process${i+1}"].y = window.botonActual.y; if(processes["process${i+1}"].display) { buttons[0].x += 10000000; buttons[0].w += 10000000} else { buttons[0].x -= 10000000; buttons[0].w -= 10000000};` : '',    "init": `let img = new Image(); img.src = '/ico${i+1}.svg'; img.onload = function() { buttons[${absoluteIndex}].loadedImg = img; };`,
+    "init": `let img = new Image(); img.src = '/ico${i+1}.svg'; img.onload = function() { buttons[${absoluteIndex}].loadedImg = img; };`,
+    "code": i === 0 ? `window.processes["process${i+1}"].display = !window.processes["process${i+1}"].display;` : '',
     "color": "white",
     "text": "ico",
     "down": ""
@@ -187,19 +203,31 @@ window.addEventListener('mousedown', function(event) {
 
   for(let i = buttons.length - 1; i >= 0; i--){
     const actualwidth = buttons[i].w - buttons[i].x;
-    const actualheight = buttons[i].h - buttons[i].y - 450;
-
+    let actualheight; // This is the main variable
+    
+    if(i != 0){
+      // REMOVED 'const' - now it correctly updates the main variable
+      actualheight = buttons[i].h - buttons[i].y; 
+    }else{
+      // REMOVED 'const' - now it correctly updates the main variable
+      actualheight = buttons[i].h - buttons[i].y - 450; 
+    }
+    
+    // Now actualheight has its real value here and works perfectly!
     if(clickX >= buttons[i].x && clickX <= (buttons[i].x + actualwidth) && 
         clickY >= buttons[i].y - 0 && clickY <= (buttons[i].y - 0 + actualheight)) {
       window.botonActual = buttons[i];
+      let processName = "process" + window.botonActual.process;
+      if(window.processes[processName]) {
+        window.processes[processName].clickedX = clickX - window.botonActual.x;
+        window.processes[processName].clickedY = clickY - window.botonActual.y;
+      }
       if (buttons[i].down) {
         eval(buttons[i].down);
       }
       return; // stop execution once hit found
     }
-    
   }
-
 });
 
 window.addEventListener('mouseup', function(event) {
@@ -211,21 +239,34 @@ window.addEventListener('mouseup', function(event) {
 
 window.addEventListener('mousemove', function(event) {
   const rect = canvas.getBoundingClientRect();
-window.xmg = event.clientX - rect.left;
-    window.ymg = event.clientY - rect.top;
-if (window.isDragging && window.draggedButton) {
-        const halfWidth = (window.draggedButton.w - window.draggedButton.x) / 2;
-        const halfHeight = (window.draggedButton.h - window.draggedButton.y) / 2 - 200;
+  window.xmg = event.clientX - rect.left;
+  window.ymg = event.clientY - rect.top;
 
-        const currentW = window.draggedButton.w - window.draggedButton.x;
-        const currentH = window.draggedButton.h - window.draggedButton.y;
 
-        window.draggedButton.x = window.xmg - halfWidth;
-        window.draggedButton.y = window.ymg - halfHeight;
+  if (window.isDragging && window.draggedButton) {
+    let processName = "process" + window.draggedButton.process;
+    
+    // Safely reads the exact location where your mouse clicked inside the window
+    let offsetX = window.processes[processName] ? window.processes[processName].clickedX : (window.draggedButton.w - window.draggedButton.x) / 2;
+    let offsetY = window.processes[processName] ? window.processes[processName].clickedY : (window.draggedButton.h - window.draggedButton.y) / 2;
 
-        window.draggedButton.w = window.draggedButton.x + currentW;
-        window.draggedButton.h = window.draggedButton.y + currentH;
+    const currentW = window.draggedButton.w - window.draggedButton.x;
+    const currentH = window.draggedButton.h - window.draggedButton.y;
+
+    // Reposition coordinates fluidly out from mouse anchor
+    window.draggedButton.x = window.xmg - offsetX;
+    window.draggedButton.y = window.ymg - offsetY;
+    window.draggedButton.w = window.draggedButton.x + currentW;
+    window.draggedButton.h = window.draggedButton.y + currentH;
+    
+    if(window.processes[processName]){
+      window.processes[processName].x = window.draggedButton.x;
+      window.processes[processName].y = window.draggedButton.y;
+      window.processes[processName].width = currentW;  // Updates stable width parameter
+      window.processes[processName].height = currentH; // Updates stable height parameter
     }
+  }
+
 });
 
 canvas.addEventListener('click', function(event) {
@@ -233,7 +274,7 @@ canvas.addEventListener('click', function(event) {
     const clickX = event.clientX - rect.left;
     const clickY = event.clientY - rect.top;
 
-    let clicked = false;
+    //let clicked = false;
 
     for(let i = buttons.length - 1; i >= 0; i--){
       if (i === 1) continue;
@@ -252,12 +293,15 @@ canvas.addEventListener('click', function(event) {
     window.ym = clickY;
 
   for(let l=0; l<buttons.length; l++) {
+
+    const actualwidth = buttons[l].w - buttons[l].x;
+    const actualheight = buttons[l].h - buttons[l].y;
     if(buttons[l].process && window.processes["process" + buttons[l].process] && window.processes["process" + buttons[l].process].display) {
-      if (buttons[l].x >= buttons[i].x && buttons[l].x <= (buttons[i].x + actualwidth) && 
-        buttons[l].y >= buttons[i].y && buttons[l].y <= (buttons[i].y + actualheight)) {
+      if (buttons[l].x >= buttons[l].x && buttons[l].x <= (buttons[l].x + actualwidth) && 
+        buttons[l].y >= buttons[l].y && buttons[l].y <= (buttons[l].y + actualheight)) {
         window.processes.clicked = true;
-        window.processes.clickedX = window.xm - buttons[i].x;
-        window.processes.clickedY = window.ym - buttons[i].y;
+        window.processes.clickedX = window.xm - buttons[l].x;
+        window.processes.clickedY = window.ym - buttons[l].y;
     }
     }}
   });
@@ -273,19 +317,28 @@ const interz = setInterval(() =>{
   let y = (canvas.height- bkg.height)/ 2 * .0002 -90;
 
   ctx.drawImage(bkg, x, y, canvas.width * 1.39, canvas.height * 1.2);
-  
+
+  // draw every process that is on the buttons, draw a each process(canvas) on top of the buttons that have it
 
   for(let i=0; i<buttons.length; i++) {
+    let processName = "process" + buttons[i].process;
+    if(buttons[i].process &&
+     window.processes[processName] != null &&
+      window.processes[processName].display) {
+      ctx.drawImage(processCanvas, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y);
+    }
+  }
+
+  for(let i=0; i<buttons.length; i++) {
+    let processName = "process" + buttons[i].process;
+    if (buttons[i].process !== undefined) {
+      continue;
+    }
+
     if(buttons[i].loadedImg) {
       ctx.drawImage(buttons[i].loadedImg, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y);
     } else {
       drawButton(buttons[i].color, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y, buttons[i].text, buttons[i].code, buttons[i].init);
-    }
-  }
-  // draw every process that is on the buttons, draw a each process(canvas) on top of the buttons that have it
-  for(let i=0; i<buttons.length; i++) {
-    if(buttons[i].process && window.processes["process" + buttons[i].process] && window.processes["process" + buttons[i].process].display) {
-      ctx.drawImage(processCanvas, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y);
     }
   }
 
