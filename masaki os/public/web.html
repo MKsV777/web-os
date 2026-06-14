@@ -28,18 +28,30 @@
   processCtx.arc(150, 150, 50, 0, Math.PI * 2);
   processCtx.fill();
 
+  const button_p ={
+    x:0,
+    y:0,
+    width:100,
+    height:100
+
+  };
+  proc = window.processes.process1;
 
   let contador = 0;
   const intervalx = setInterval(() => {
-
-    if(window.processes.process1.clicked == true){
+    if(proc.clicked === true &&
+      proc.clickedX >= button_p.x &&
+      proc.clickedX <= button_p.x + button_p.width &&
+      proc.clickedY >= button_p.y &&
+      proc.clickedY <= button_p.y + button_p.height) {
       console.log("test");
     }
-     contador += 1;
+
+    contador += 1;
     processCtx.clearRect(0, 0, processCanvas.width, processCanvas.height);
     processCtx.fillStyle = '#ededed';
     processCtx.beginPath();
-    processCtx.rect( 0, 0, canvas.width, canvas.height);
+    processCtx.rect( 0, 0, processCanvas.width, processCanvas.height);
     
     processCtx.fill();
 
@@ -48,7 +60,7 @@
     processCtx.rect( 0,0, 1800, 48.5);
 
     processCtx.rect( 100, 100, 100, 100);
-    processCtx.rect(250, 65, canvas.width - 100 - 200, canvas.height - 150);
+    processCtx.rect(250, 65, processCanvas.width - 100 - 200, processCanvas.height - 150);
     
     processCtx.fill();
     processCtx.beginPath();                  // Resets the path so text is independent
