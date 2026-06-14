@@ -29,10 +29,10 @@
   processCtx.fill();
 
   const button_p ={
-    x:0,
-    y:0,
-    width:100,
-    height:100
+    x:62,
+    y:59,
+    width:62,
+    height:68,
 
   };
   proc = window.processes.process1;
@@ -44,7 +44,13 @@
       proc.clickedX <= button_p.x + button_p.width &&
       proc.clickedY >= button_p.y &&
       proc.clickedY <= button_p.y + button_p.height) {
-      console.log("test");
+        
+        if(window.statewindowthings == false){
+          window.statewindowthings = true;
+        } else {
+          window.statewindowthings = false;
+        }
+        proc.clicked = false;
     }
 
     contador += 1;
@@ -70,7 +76,9 @@
     
     // 150 is the X position, 150 is the Y position
     processCtx.fillText("system files", 100, 152);
-
+    if(window.statewindowthings == true){
+      processCtx.fillText("work in progress", 300, 152);
+    }
     // move a square across the screen top to bottom
     if(contador > processCanvas.height) contador = 0;
     
