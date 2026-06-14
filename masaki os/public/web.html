@@ -60,14 +60,23 @@
     processCtx.rect( 0, 0, processCanvas.width, processCanvas.height);
     
     processCtx.fill();
-
     processCtx.fillStyle = 'gray';
+
     processCtx.beginPath();
     processCtx.rect( 0,0, 1800, 48.5);
 
-    processCtx.rect( 100, 100, 100, 100);
-    processCtx.rect(250, 65, processCanvas.width - 100 - 200, processCanvas.height - 150);
     
+    processCtx.rect(250, 65, processCanvas.width - 100 - 200, processCanvas.height - 150);
+        processCtx.fill();
+    processCtx.beginPath();
+    if(window.statewindowthings) {    
+        processCtx.fillStyle = '#5E5E5E';
+    } else {
+        processCtx.fillStyle = 'gray';
+    }
+    processCtx.rect(100, 100, 100, 100);
+    processCtx.fill();
+
     processCtx.fill();
     processCtx.beginPath();                  // Resets the path so text is independent
     processCtx.fillStyle = 'black';          // Text color
@@ -82,7 +91,6 @@
     // move a square across the screen top to bottom
     if(contador > processCanvas.height) contador = 0;
     
-    processCtx.fill();
 
   }, 1);
 
