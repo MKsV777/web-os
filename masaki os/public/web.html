@@ -37,33 +37,27 @@ var buttons = [
   {}
 ];
 
-window.onload = function() {
-    // Using forEach solves the asynchronous loop trap
-    buttons.forEach((btn) => {
-        if (btn.x === undefined) return; // Skip empty starter objects
+window.addEventListener('load', function() {
+    for(let i = 0; i < buttons.length; i++) {
+        let currentBtn = buttons[i];
+        if (!currentBtn || currentBtn.x === undefined) continue; 
         
-        window.botonActual = btn;
-        if (btn.init) eval(btn.init);
+        window.botonActual = currentBtn;
+        if (currentBtn.init) eval(currentBtn.init);
 
-        if (btn.img) {
+        if (currentBtn.img) {
             let staticImg = new Image();
-            
-            // Set up what to do when THIS specific button's image finishes loading
             staticImg.onload = () => {
-                drawButton(btn.color, btn.x, btn.y, btn.w - btn.x, btn.h - btn.y, btn.text, null, null, staticImg);
+                drawButtonz(currentBtn.color, currentBtn.x, currentBtn.y, currentBtn.w - currentBtn.x, currentBtn.h - currentBtn.y, currentBtn.text, null, null, staticImg);
             };
-            
-            staticImg.src = btn.img;
+            staticImg.src = currentBtn.img;
         } else {
-            // No image? Draw standard color block immediately
-            drawButton(btn.color, btn.x, btn.y, btn.w - btn.x, btn.h - btn.y, btn.text);
+            drawButtonz(currentBtn.color, currentBtn.x, currentBtn.y, currentBtn.w - currentBtn.x, currentBtn.h - currentBtn.y, currentBtn.text);
         }
-    });
+    }
+});
 
-};
-
-
-function drawButton(color, x, y, width, height, text, code, initCode, img) {
+function drawButtonz(color, x, y, width, height, text, code, initCode, img) {
     if (x === undefined || y === undefined) return;
 
     // FIX 1: DRAW BACKGROUND LAYER FIRST (Image takes priority over color)
