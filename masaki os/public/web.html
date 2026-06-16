@@ -173,20 +173,25 @@ window.addEventListener('mousedown', function(event) {
     // Now actualheight has its real value here and works perfectly!
     if(clickX >= buttons[i].x && clickX <= (buttons[i].x + actualwidth) && 
       clickY >= buttons[i].y && clickY <= (buttons[i].y + actualheight)) {
-      window.botonActual = buttons[i];
-      let processName = "process" + window.botonActual.process;
+      const clickedTarget = buttons[i];
+      window.botonActual = clickedTarget; 
+      
+      let processName = "process" + clickedTarget.process;
       if(window.processes[processName]) {
-        window.processes[processName].clicked = true; // FIX: Flip this to true to broadcast the click!
-        window.processes[processName].clickedX = clickX - window.botonActual.x;
-        window.processes[processName].clickedY = clickY - window.botonActual.y;
+        window.processes[processName].clicked = true; 
+        window.processes[processName].clickedX = clickX - clickedTarget.x;
+        window.processes[processName].clickedY = clickY - clickedTarget.y;
       }
-      if (buttons[i].down) {
-        if (i === 0) {
-          if (clickY <= buttons[i].y + 35) {
-            eval(buttons[i].down);
+      if (clickedTarget.down) {
+        if (i === 0 || clickedTarget.process === 2) { // Ensure window 2 has header-dragging limits if desired
+          if (clickY <= clickedTarget.y + 35) {
+             // FIX HERE: Dynamically use explicit variable context instead of eval reliance on the global instance
+             window.isDragging = true; 
+             window.draggedButton = clickedTarget;
           }
         } else {
-          eval(buttons[i].down);
+          window.isDragging = true;
+          window.draggedButton = clickedTarget;
         }
       }
       return; // stop execution once hit found
@@ -275,6 +280,24 @@ const timeString = now.toLocaleTimeString('en-US', {
 });
 
 buttons[3].text = timeString;
+
+buttons.push(    {
+        "x": 4 + 500 - 50,
+        "y": 65 ,
+        "w": 1000 + 500 - 50,
+        "h": 550 ,
+        "code": "",
+        "down": 'window.isDragging = true; window.draggedButton = window.botonActual',
+        "init": "",
+        "color": "#171717",
+        "process": 2,
+        "text": ""
+    });
+    
+Object.keys(window.processes).forEach((procKey) => {
+    updateprocesswindow(procKey, 0);
+});
+    
 
 const interz = setInterval(() =>{
 

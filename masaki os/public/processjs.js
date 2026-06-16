@@ -34,7 +34,7 @@ let processxd;
     let proc = window.processes[processKey];
 
     let contador = 0;
-    window.processButtons = [
+    processButtons = [
         {
         "x": 0,       
         "y": 0,       
@@ -75,16 +75,15 @@ let processxd;
         window.processes[nameprocesselementxd].canvas = processCanvas;
 
         // FIX: Update your layout sizes dynamically now that processCanvas exists!
-        window.processButtons[0].w = processCanvas.width;
-        window.processButtons[1].w = processCanvas.width;
-        window.processButtons[1].h = processCanvas.height;
+        processButtons[0].w = processCanvas.width;
+        processButtons[1].w = processCanvas.width;
+        processButtons[1].h = processCanvas.height;
         processxd = `process${localprocess}`;
 
-        for(let i = 0; i < window.processButtons.length; i++) {
-            let currentBtn = window.processButtons[i];
-            if (!currentBtn || currentBtn.x === undefined) continue; 
+        for(let i = 0; i < processButtons.length; i++) {
+            let currentBtn = processButtons[i];
+            if (!currentBtn || currentBtn.x === undefined) continue;
             
-            window.botonActual = currentBtn;
             if (currentBtn.init) eval(currentBtn.init);
 
             if (currentBtn.img) {
@@ -135,8 +134,8 @@ setInterval(() => {
         // This consumes the click token so the next millisecond loop cycle skips this block.
         window.processes[processKey].clicked = false;
 
-        for (let x = window.processButtons.length - 1; x >= 0; x--){
-            let btn = window.processButtons[x];
+        for (let x = processButtons.length - 1; x >= 0; x--){
+            let btn = processButtons[x];
 
             if (clickX >= btn.x - 39 && clickX <= (btn.w-150) && 
                 clickY >= btn.y - 37 && clickY <= (btn.h - 71)) {
@@ -148,4 +147,5 @@ setInterval(() => {
     }
 }, 1);
 }
+setupprocess();
 setupprocess();
