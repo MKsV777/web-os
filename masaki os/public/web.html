@@ -1,138 +1,6 @@
 <canvas id="canvas" style="width: 100%; height: 100%;"></canvas>
-<canvas id="process" style="width: 100%; height: 100%; display:none "></canvas>
 
-<script>
-  // i hate my code
-  window.processes = {
-    "process1": {
-      "display" : true,
-      "x": 504,
-      "y": 65,
-      "width": 1000,
-      "height": 485,
-      "clickedX": 0,
-      "clickedY": 0,
-      "clicked": false,
-    }
-  }
-  
-  //get image from process and apply it to window.img
-  const processCanvas = document.getElementById('process');
-  const processCtx = processCanvas.getContext('2d');
-  processCanvas.width = window.innerWidth;
-  processCanvas.height = window.innerHeight;
-  
-
-  const button_p ={
-    x:0,
-    y:0,
-    width:1000,
-    height:485,
-
-  }; // somehow its x it draws on -50 idk how idk why idk if it only works on my pc
-  proc = window.processes.process1;
-
-  let contador = 0;
-var processButtons = [
-    {
-      "x": 0,       // Top left corner
-      "y": 0,       // Top left corner
-      "w": processCanvas.width,     // Button width
-      "h": 50,      // Button height
-      "color": "#cacaca", // lol
-      "text": "file manager",
-    },
-    {
-      "x": 0,
-      "y": 50,
-      "w": processCanvas.width,
-      "h": processCanvas.height,
-      "color": "rgba(230, 230, 230, 0.5)",
-      "text": ""
-    },
-    {
-      "x": 100,
-      "y": 100,
-      "w": 400,
-      "h": 200,
-      "color": "#cacaca", // lol
-      "text": "file manager",
-      "code": "alert('hola')"
-    }
-  ];
-
-window.addEventListener('load', function() {
-    for(let i = 0; i < processButtons.length; i++) {
-        let currentBtn = processButtons[i];
-        if (!currentBtn || currentBtn.x === undefined) continue; 
-        
-        window.botonActual = currentBtn;
-        if (currentBtn.init) eval(currentBtn.init);
-
-        if (currentBtn.img) {
-            let staticImg = new Image();
-            staticImg.onload = () => {
-                drawButtonz(currentBtn.color, currentBtn.x, currentBtn.y, currentBtn.w - currentBtn.x, currentBtn.h - currentBtn.y, currentBtn.text, null, null, staticImg);
-            };
-            staticImg.src = currentBtn.img;
-        } else {
-            drawButtonz(currentBtn.color, currentBtn.x, currentBtn.y, currentBtn.w - currentBtn.x, currentBtn.h - currentBtn.y, currentBtn.text);
-        }
-    }
-});
-
-function drawButtonz(color, x, y, width, height, text, code, initCode, img) {
-    if (x === undefined || y === undefined) return;
-
-    if (img && img instanceof HTMLImageElement) {
-        processCtx.drawImage(img, x, y, width, height);
-    } else if (color) {
-        processCtx.fillStyle = color;
-        processCtx.fillRect(x, y, width, height);    
-    }
-    
-
-    processCtx.fillStyle = "white";
-    processCtx.font = "20px Arial";
-    processCtx.textAlign = "center";
-    const lines = (text || "").split('\n');
-    const lineHeight = 24;
-    const totalTextHeight = lines.length * lineHeight;
-    let startY = y + (height / 2) - (totalTextHeight / 2) + (lineHeight / 2) + 4;
-    for (let i = 0; i < lines.length; i++) {
-        processCtx.fillText(lines[i], x + width / 2, startY + (i * lineHeight));
-    }
-}
-
-// This loop runs every 1 millisecond
-setInterval(() => {
-    
-    // 1. Check if the main window registered a click on this specific process
-    if (window.processes && window.processes.process1 && window.processes.process1.clicked) {
-        
-        let clickX = window.processes.process1.clickedX;
-        let clickY = window.processes.process1.clickedY;
-
-        for (let x = processButtons.length - 1; x >= 0; x--){
-            let btn = processButtons[x];
-
-            if (clickX >= btn.x - 39 && clickX <= (btn.w-150) && 
-                clickY >= btn.y - 37 && clickY <= (btn.h - 71)) {
-                
-
-                if (btn.code) eval(btn.code);
-
-                break; 
-            }
-        }
-
-        window.processes.process1.clicked = false;
-    }
-
-
-}, 1);
-
-</script>
+<script src="processjs.js"></script>
 
 <script>
   const canvas = document.getElementById('canvas');
@@ -157,7 +25,7 @@ var buttons = [
         "code": "",
         "down": 'window.isDragging = true; window.draggedButton = window.botonActual',
         "init": "",
-        "color": "green",
+        "color": "#171717",
         "process": 1,
         "text": ""
     }
@@ -174,8 +42,9 @@ function updateprocesswindow(i, l){
   }
 }
 
-updateprocesswindow("process1", 0);
-
+Object.keys(window.processes).forEach((procKey) => {
+    updateprocesswindow(procKey, 0);
+});
 /*    {
         "x": 613,
         "y": 725,
@@ -194,6 +63,28 @@ buttons.push({
     "init": `let img = new Image(); img.src = '/bar.svg'; img.onload = function() { buttons[1].loadedImg = img; };`,
     "color": "white",
     "text": "bar",
+    "down": ""
+  });
+buttons.push({
+    "x": 0 ,
+    "y": 0, 
+    "w": canvas.width,
+    "h": 25,
+    "code": '',
+    "init": ``,
+    "color": "#171717",
+    "text": "",
+    "down": ""
+  });
+buttons.push({
+    "x": 30,
+    "y": 0, 
+    "w": 80,
+    "h": 25,
+    "code": '',
+    "init": ``,
+    "color": "#171717",
+    "text": "00:00",
     "down": ""
   });
 
@@ -283,7 +174,7 @@ window.addEventListener('mousedown', function(event) {
       window.botonActual = buttons[i];
       let processName = "process" + window.botonActual.process;
       if(window.processes[processName]) {
-        window.processes[processName].clicked = true;
+        window.processes[processName].clicked = true; // FIX: Flip this to true to broadcast the click!
         window.processes[processName].clickedX = clickX - window.botonActual.x;
         window.processes[processName].clickedY = clickY - window.botonActual.y;
       }
@@ -302,13 +193,6 @@ window.addEventListener('mousedown', function(event) {
 });
 
 window.addEventListener('mouseup', function(event) {
-  for(let l=0; l<buttons.length; l++) {
-
-    let processName = "process" + buttons[l].process;
-    if (buttons[l].process && window.processes[processName]) {
-      window.processes[processName].clicked = false;
-    }
-  }
   window.buttondown = false;
   window.isDragging = false;
   window.draggedButton = null;
@@ -361,6 +245,7 @@ canvas.addEventListener('click', function(event) {
 
         if (clickX >= buttons[i].x && clickX <= (buttons[i].x + actualwidth) && 
         clickY >= buttons[i].y && clickY <= (buttons[i].y + actualheight)) {
+          
           //alert("Dynamic Button " + (i + 1) + " clicked!");
           window.botonActual = buttons[i];
           eval(buttons[i].code);
@@ -375,7 +260,31 @@ canvas.addEventListener('click', function(event) {
   let bkg = new Image();
 
   bkg.src = "/background.svg";
+
+const now = new Date();
+const currentHour = now.getHours(); // Returns 0-23   
+const hour24 = now.getHours();
+const period = hour24 >= 12 ? 'PM' : 'AM';
+let hour12 = hour24 % 12;
+if (hour12 === 0) hour12 = 12; // Midnight becomes 12 AM
+const timeString = now.toLocaleTimeString('en-US', { 
+  hour: '2-digit', 
+  minute: '2-digit' 
+});
+
+buttons[3].text = timeString;
+
 const interz = setInterval(() =>{
+
+let hour12 = hour24 % 12;
+if (hour12 === 0) hour12 = 12; // Midnight becomes 12 AM
+const timeString = now.toLocaleTimeString('en-US', { 
+  hour: '2-digit', 
+  minute: '2-digit' 
+});
+
+buttons[3].text = timeString;
+
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -407,6 +316,7 @@ const interz = setInterval(() =>{
       drawButton(buttons[i].color, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y, buttons[i].text, buttons[i].code, buttons[i].init);
     }
   }
+
 
 }, 1);
 
