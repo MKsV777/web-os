@@ -22,77 +22,90 @@
   processCanvas.width = window.innerWidth;
   processCanvas.height = window.innerHeight;
   
-  processCtx.fillStyle = 'red';
-  processCtx.beginPath();
-
-  processCtx.arc(150, 150, 50, 0, Math.PI * 2);
-  processCtx.fill();
 
   const button_p ={
-    x:60,
-    y:59,
-    width:62,
-    height:68,
+    x:50,
+    y:50,
+    width:150,
+    height:150,
 
-  };
+  }; // somehow its x it draws on -50 idk how idk why idk if it only works on my pc
   proc = window.processes.process1;
 
   let contador = 0;
-  const intervalx = setInterval(() => {
-    if(proc.clicked === true &&
-      proc.clickedX >= button_p.x &&
-      proc.clickedX <= button_p.x + button_p.width &&
-      proc.clickedY >= button_p.y &&
-      proc.clickedY <= button_p.y + button_p.height) {
+var buttons = [
+  {}
+];
+
+window.onload = function() {
+    // Using forEach solves the asynchronous loop trap
+    buttons.forEach((btn) => {
+        if (btn.x === undefined) return; // Skip empty starter objects
         
-        if(window.statewindowthings == false){
-          window.statewindowthings = true;
+        window.botonActual = btn;
+        if (btn.init) eval(btn.init);
+
+        if (btn.img) {
+            let staticImg = new Image();
+            
+            // Set up what to do when THIS specific button's image finishes loading
+            staticImg.onload = () => {
+                drawButton(btn.color, btn.x, btn.y, btn.w - btn.x, btn.h - btn.y, btn.text, null, null, staticImg);
+            };
+            
+            staticImg.src = btn.img;
         } else {
-          window.statewindowthings = false;
+            // No image? Draw standard color block immediately
+            drawButton(btn.color, btn.x, btn.y, btn.w - btn.x, btn.h - btn.y, btn.text);
         }
-        proc.clicked = false;
+    });
+
+};
+
+
+function drawButton(color, x, y, width, height, text, code, initCode, img) {
+    if (x === undefined || y === undefined) return;
+
+    // FIX 1: DRAW BACKGROUND LAYER FIRST (Image takes priority over color)
+    if (img && img instanceof HTMLImageElement) {
+        processCtx.drawImage(img, x, y, width, height);
+    } else if (color) {
+        processCtx.fillStyle = color;
+        processCtx.fillRect(x, y, width, height);    
     }
-
-    contador += 1;
-    processCtx.clearRect(0, 0, processCanvas.width, processCanvas.height);
-    processCtx.fillStyle = '#ededed';
-    processCtx.beginPath();
-    processCtx.rect( 0, 0, processCanvas.width, processCanvas.height);
     
-    processCtx.fill();
-    processCtx.fillStyle = 'gray';
-
-    processCtx.beginPath();
-    processCtx.rect( 0,0, 1800, 48.5);
-
-    
-    processCtx.rect(250, 65, processCanvas.width - 100 - 200, processCanvas.height - 150);
-        processCtx.fill();
-    processCtx.beginPath();
-    if(window.statewindowthings) {    
-        processCtx.fillStyle = '#5E5E5E';
-    } else {
-        processCtx.fillStyle = 'gray';
+    // FIX 2: DRAW TEXT LAYER LAST (So it prints directly on top of the background)
+    processCtx.fillStyle = "white";
+    processCtx.font = "20px Arial";
+    processCtx.textAlign = "center";
+    const lines = (text || "").split('\n');
+    const lineHeight = 24;
+    const totalTextHeight = lines.length * lineHeight;
+    let startY = y + (height / 2) - (totalTextHeight / 2) + (lineHeight / 2) + 4;
+    for (let i = 0; i < lines.length; i++) {
+        processCtx.fillText(lines[i], x + width / 2, startY + (i * lineHeight));
     }
-    processCtx.rect(100, 100, 100, 100);
-    processCtx.fill();
+}
 
-    processCtx.fill();
-    processCtx.beginPath();                  // Resets the path so text is independent
-    processCtx.fillStyle = 'black';          // Text color
-    processCtx.font = '20px Arial';          // Font style
-    processCtx.textAlign = 'left';
-    
-    // 150 is the X position, 150 is the Y position
-    processCtx.fillText("system files", 100, 152);
-    if(window.statewindowthings == true){
-      processCtx.fillText("work in progress", 300, 152);
-    }
-    // move a square across the screen top to bottom
-    if(contador > processCanvas.height) contador = 0;
-    
+processCanvas.addEventListener('click', function(event) {
+    const rect = processCanvas.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const clickY = event.clientY - rect.top;
 
-  }, 1);
+    let clicked = false;
+
+    for(let i = 0; i < buttons.length; i++){
+        if (clickX >= buttons[i].x && clickX <= (buttons[i].w) && 
+            clickY >= buttons[i].y && clickY <= (buttons[i].h)) {
+          //alert("Dynamic Button " + (i + 1) + " clicked!");
+          window.botonActual = buttons[i];
+          eval(buttons[i].code);
+          return; // stop execution once hit found
+        }
+      }
+    window.xm = clickX;
+    window.ym = clickY;
+});
 
 </script>
 

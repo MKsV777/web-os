@@ -1,0 +1,233 @@
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* kil the scrolling bars*/
+    width: 100vw;
+    height: 100vh;
+    background: rgb(144, 144, 144);
+  }
+</style>
+
+<div style="position: relative; width: 100vw; height: 100vh; overflow: hidden;">
+  
+  <processCanvas id="processCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></processCanvas>
+  
+  <div id="turn" style="position: absolute; top: 0; right: 0; width: 30%; height: 100%; background: rgba(221, 221, 221, 0.2); box-sizing: border-box; padding: 10px; z-index: 100; pointer-events: none;">
+    
+    <textarea id="textearea" style="width: 100%; height: 30%; resize: none; box-sizing: border-box; pointer-events: auto; background: transparent; color: white; border: 1px solid white; font-family: monospace; white-space: pre; overflow-x: auto;"></textarea>
+    
+  <button onclick="const textarea = document.getElementById('textearea'); buttons = JSON.parse(textarea.value); pprocessCtx.clearRect(0,0,processCanvas.width,processCanvas.height); buttons.forEach(btn => { if(btn.img){ let img = new Image(); img.onload = () => drawButton(btn.color, btn.x, btn.y, btn.w - btn.x, btn.h - btn.y, btn.text, null, null, img); img.src = btn.img; } else { drawButton(btn.color, btn.x, btn.y, btn.w - btn.x, btn.h - btn.y, btn.text); } });" 
+          style="pointer-events: auto; width: 100%; margin-top: 5px; background: transparent; color: white; border: 1px solid white; padding: 5px; cursor: pointer;">
+    sync
+  </button>
+    <a>first click the bottom right corner of panel and click ✎, then click top left corner and click ⬇️</a>
+    <br>
+    <button id="tomarx" style="pointer-events: auto;">
+      ✎
+    </button>
+    <button id="dropx" style="pointer-events: auto;">
+      ⬇️
+    </button>
+    <br>
+    <a>svg textbox when clicking button use that as src on button</a>
+    <textarea id="svgEditorarea" style="width: 100%; height: 30%; resize: none; box-sizing: border-box; pointer-events: auto; background: transparent; color: white; border: 1px solid white; font-family: monospace; white-space: pre; overflow-x: auto;">
+      <svg version="1.1" 
+     xmlns="http://www.w3.org/2000/svg" 
+     xmlns:xlink="http://www.w3.org/1999/xlink" 
+     width="150.34174" 
+     height="128.49764" 
+     viewBox="0,0,150.34174,128.49764">
+  
+  <defs>
+    <linearGradient id="color-1" x1="240.74575" y1="116.20357" x2="240.74575" y2="244.70121" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c5c5c5"/>
+      <stop offset="1" stop-color="#999999"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(-165.57488,-116.20357)">
+    <g stroke-miterlimit="10">
+      
+      <path d="M176.43473,232.50101
+               c-14.00833,-12.2671 -14.94371,-90.33741 0,-104.56812
+               c14.50432,-13.81229 111.29785,-17.20249 127.13054,-0.43389
+               c15.72777,16.65747 17.04096,88.08742 0.4339,105.00202
+               c-16.70265,15.76653 -108.42573,16.75977 -127.56443,0
+               z" 
+            fill="url(#color-1)" 
+            stroke="#000000" 
+            stroke-width="0"/>
+      
+      <text transform="translate(207.75002,185.76875) scale(0.5,0.5)" 
+            font-size="40" 
+            font-family="Sans Serif" 
+            font-weight="normal" 
+            fill="#000000" 
+            stroke="none" 
+            stroke-width="1" 
+            text-anchor="start" 
+            xml:space="preserve">
+        <tspan x="0" dy="0">test xd</tspan>
+      </text>
+
+    </g>
+  </g>
+</svg>
+
+    </textarea>
+    <button onclick="const dUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(document.getElementById('svgEditorarea').value); const img = new Image(); img.src = dUrl; navigator.clipboard.writeText(dUrl).then(() => console.log('Data URL copied!')).catch(err => console.error('Error:', err));"
+            style="pointer-events: auto; width: 100%; margin-top: 5px; background: transparent; color: white; border: 1px solid white; padding: 5px; cursor: pointer;">
+      copy button to clipboard
+    </button>
+  </div>
+
+</div>
+<script>
+  const processCanvas = document.getElementById('processCanvas');
+  const pprocessCtx = processCanvas.getContext('2d');
+
+  // Set processCanvas size to fill the window
+  processCanvas.width = window.innerWidth;
+  processCanvas.height = window.innerHeight;
+/*
+  const img = new Image();
+
+  img.src ="./public/placeholder.svg";
+
+img.addEventListener("load", () => {
+  pprocessCtx.drawImage(img, 0, 0);
+});*/
+
+var buttons = [
+  {}
+];
+
+function updatetextarea(){
+  const textarea = document.getElementById('textearea');
+  textarea.value = JSON.stringify(buttons, null, 2);
+}
+window.onload = function() {
+    // Using forEach solves the asynchronous loop trap
+    buttons.forEach((btn) => {
+        if (btn.x === undefined) return; // Skip empty starter objects
+        
+        window.botonActual = btn;
+        if (btn.init) eval(btn.init);
+
+        if (btn.img) {
+            let staticImg = new Image();
+            
+            // Set up what to do when THIS specific button's image finishes loading
+            staticImg.onload = () => {
+                drawButton(btn.color, btn.x, btn.y, btn.w - btn.x, btn.h - btn.y, btn.text, null, null, staticImg);
+            };
+            
+            staticImg.src = btn.img;
+        } else {
+            // No image? Draw standard color block immediately
+            drawButton(btn.color, btn.x, btn.y, btn.w - btn.x, btn.h - btn.y, btn.text);
+        }
+    });
+    
+    updatetextarea();
+};
+
+// i should press click, letter x then click and then another click and then another letter to get data
+document.onkeypress = function (e) {
+    e = e || window.event;
+    console.log(window.xm / processCanvas.width, " " ,window.ym / processCanvas.height, " ", window.w / processCanvas.width, " ", window.h / processCanvas.height);
+};
+
+document.addEventListener('keydown', (event) => {
+  // event.key devuelve la letra o tecla presionada
+  if(event.key === '¡'){
+    console.log(buttons);
+  }
+});
+
+document.getElementById("tomarx").onclick = function() {
+  window.h = window.ym;
+  window.w = window.xm;
+};
+document.getElementById("dropx").onclick = function() {
+  window.addbutton();
+};
+
+window.addbutton = () => {
+    codexc = "";
+    codex = "";
+    colorx = prompt("color");
+    textxd = prompt("text");
+    imgxdd = prompt("use the one in area? y:n");
+    imgxddd = new Image();
+    if(imgxdd == "y" || imgxdd == "Y"){
+      imgxddd = new Image();
+      // 1. FIXED: Changed .source to .src
+      imgxddd.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(document.getElementById('svgEditorarea').value);
+      sourcexddd = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(document.getElementById('svgEditorarea').value);
+      // 2. FIXED: Force a redraw as soon as the browser finishes building the SVG image
+      imgxddd.onload = () => {
+         pprocessCtx.clearRect(0, 0, processCanvas.width, processCanvas.height);
+         buttons.forEach((btn) => {
+             if (btn.img) {
+                 let tempImg = new Image();
+                 tempImg.onload = () => drawButton(btn.color, btn.x, btn.y, btn.w - btn.x, btn.h - btn.y, btn.text, null, null, tempImg);
+                 tempImg.src = btn.img;
+             } else {
+                 drawButton(btn.color, btn.x, btn.y, btn.w - btn.x, btn.h - btn.y, btn.text);
+             }
+         });
+      };
+    }
+    buttons.push({x: window.xm, y: window.ym, w: window.w, h: window.h, code: codex, init: codexc, color: colorx, text: textxd, img:sourcexddd});
+    drawButton(colorx, window.xm, window.ym, window.w - window.xm, window.h - window.ym, textxd, codex, codexc, imgxddd);
+    window.botonActual = buttons[buttons.length - 1];
+    eval(buttons[buttons.length - 1].init);
+    updatetextarea();
+};
+
+function drawButton(color, x, y, width, height, text, code, initCode, img) {
+    if (x === undefined || y === undefined) return;
+
+    // FIX 1: DRAW BACKGROUND LAYER FIRST (Image takes priority over color)
+    if (img && img instanceof HTMLImageElement) {
+        pprocessCtx.drawImage(img, x, y, width, height);
+    } else if (color) {
+        pprocessCtx.fillStyle = color;
+        pprocessCtx.fillRect(x, y, width, height);    
+    }
+    
+    // FIX 2: DRAW TEXT LAYER LAST (So it prints directly on top of the background)
+    pprocessCtx.fillStyle = "white";
+    pprocessCtx.font = "20px Arial";
+    pprocessCtx.textAlign = "center";
+    const lines = (text || "").split('\n');
+    const lineHeight = 24;
+    const totalTextHeight = lines.length * lineHeight;
+    let startY = y + (height / 2) - (totalTextHeight / 2) + (lineHeight / 2) + 4;
+    for (let i = 0; i < lines.length; i++) {
+        pprocessCtx.fillText(lines[i], x + width / 2, startY + (i * lineHeight));
+    }
+}
+
+processCanvas.addEventListener('click', function(event) {
+    const rect = processCanvas.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const clickY = event.clientY - rect.top;
+
+    let clicked = false;
+
+    for(let i = 0; i < buttons.length; i++){
+        if (clickX >= buttons[i].x && clickX <= (buttons[i].w) && 
+            clickY >= buttons[i].y && clickY <= (buttons[i].h)) {
+          //alert("Dynamic Button " + (i + 1) + " clicked!");
+          window.botonActual = buttons[i];
+          eval(buttons[i].code);
+          return; // stop execution once hit found
+        }
+      }
+    window.xm = clickX;
+    window.ym = clickY;
+});
+</script>
