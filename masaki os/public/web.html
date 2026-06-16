@@ -24,22 +24,37 @@
   
 
   const button_p ={
-    x:50,
-    y:50,
-    width:150,
-    height:150,
+    x:0,
+    y:0,
+    width:1000,
+    height:485,
 
   }; // somehow its x it draws on -50 idk how idk why idk if it only works on my pc
   proc = window.processes.process1;
 
   let contador = 0;
-var buttons = [
-  {}
-];
+var processButtons = [
+    {
+      "x": 0,       // Top left corner
+      "y": 0,       // Top left corner
+      "w": processCanvas.width,     // Button width
+      "h": 50,      // Button height
+      "color": "#cacaca", // lol
+      "text": "file manager",
+    },
+    {
+      "x": 0,
+      "y": 50,
+      "w": processCanvas.width,
+      "h": processCanvas.height,
+      "color": "rgba(230, 230, 230, 0.5)",
+      "text": ""
+    }
+  ];
 
 window.addEventListener('load', function() {
-    for(let i = 0; i < buttons.length; i++) {
-        let currentBtn = buttons[i];
+    for(let i = 0; i < processButtons.length; i++) {
+        let currentBtn = processButtons[i];
         if (!currentBtn || currentBtn.x === undefined) continue; 
         
         window.botonActual = currentBtn;
@@ -80,25 +95,25 @@ function drawButtonz(color, x, y, width, height, text, code, initCode, img) {
     }
 }
 
-processCanvas.addEventListener('click', function(event) {
-    const rect = processCanvas.getBoundingClientRect();
-    const clickX = event.clientX - rect.left;
-    const clickY = event.clientY - rect.top;
+  processCanvas.addEventListener('click', function(event) {
+      const rect = processCanvas.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const clickY = event.clientY - rect.top;
 
-    let clicked = false;
-
-    for(let i = 0; i < buttons.length; i++){
-        if (clickX >= buttons[i].x && clickX <= (buttons[i].w) && 
-            clickY >= buttons[i].y && clickY <= (buttons[i].h)) {
-          //alert("Dynamic Button " + (i + 1) + " clicked!");
-          window.botonActual = buttons[i];
-          eval(buttons[i].code);
-          return; // stop execution once hit found
-        }
+      
+      for(let i = 0; i < processButtons.length; i++){
+          let btn = processButtons[i];
+          if (clickX >= btn.x && clickX <= btn.w && 
+              clickY >= btn.y && clickY <= btn.h) {
+            
+            window.botonActual = btn;
+            if(btn.code) eval(btn.code);
+            return; 
+          }
       }
-    window.xm = clickX;
-    window.ym = clickY;
-});
+      window.xm = clickX;
+      window.ym = clickY;
+  });
 
 </script>
 
