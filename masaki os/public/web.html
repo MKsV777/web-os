@@ -300,13 +300,14 @@ Object.keys(window.processes).forEach((procKey) => {
     
 
 const interz = setInterval(() =>{
-  const liveTime = new Date();
-  const currentHour = now.getHours(); // Returns 0-23   
-  const hour24 = now.getHours();
+const liveTime = new Date();
+  
+  const hour24 = liveTime.getHours();
   const period = hour24 >= 12 ? 'PM' : 'AM';
   let hour12 = hour24 % 12;
   if (hour12 === 0) hour12 = 12; // Midnight becomes 12 AM
-  const timeString = now.toLocaleTimeString('en-US', { 
+  
+  const timeString = liveTime.toLocaleTimeString('en-US', { 
     hour: '2-digit', 
     minute: '2-digit' 
   });
