@@ -60,7 +60,6 @@ window.addEventListener('load', function() {
 function drawButtonz(color, x, y, width, height, text, code, initCode, img) {
     if (x === undefined || y === undefined) return;
 
-    // FIX 1: DRAW BACKGROUND LAYER FIRST (Image takes priority over color)
     if (img && img instanceof HTMLImageElement) {
         processCtx.drawImage(img, x, y, width, height);
     } else if (color) {
@@ -68,7 +67,7 @@ function drawButtonz(color, x, y, width, height, text, code, initCode, img) {
         processCtx.fillRect(x, y, width, height);    
     }
     
-    // FIX 2: DRAW TEXT LAYER LAST (So it prints directly on top of the background)
+
     processCtx.fillStyle = "white";
     processCtx.font = "20px Arial";
     processCtx.textAlign = "center";
