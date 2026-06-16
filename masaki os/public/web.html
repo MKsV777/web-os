@@ -49,6 +49,15 @@ var processButtons = [
       "h": processCanvas.height,
       "color": "rgba(230, 230, 230, 0.5)",
       "text": ""
+    },
+    {
+      "x": 100,
+      "y": 100,
+      "w": 400,
+      "h": 200,
+      "color": "#cacaca", // lol
+      "text": "file manager",
+      "code": "alert('hola')"
     }
   ];
 
@@ -95,25 +104,33 @@ function drawButtonz(color, x, y, width, height, text, code, initCode, img) {
     }
 }
 
-  processCanvas.addEventListener('click', function(event) {
-      const rect = processCanvas.getBoundingClientRect();
-      const clickX = event.clientX - rect.left;
-      const clickY = event.clientY - rect.top;
+// This loop runs every 1 millisecond
+setInterval(() => {
+    
+    // 1. Check if the main window registered a click on this specific process
+    if (window.processes && window.processes.process1 && window.processes.process1.clicked) {
+        
+        let clickX = window.processes.process1.clickedX;
+        let clickY = window.processes.process1.clickedY;
 
-      
-      for(let i = 0; i < processButtons.length; i++){
-          let btn = processButtons[i];
-          if (clickX >= btn.x && clickX <= btn.w && 
-              clickY >= btn.y && clickY <= btn.h) {
-            
-            window.botonActual = btn;
-            if(btn.code) eval(btn.code);
-            return; 
-          }
-      }
-      window.xm = clickX;
-      window.ym = clickY;
-  });
+        for (let x = processButtons.length - 1; x >= 0; x--){
+            let btn = processButtons[x];
+
+            if (clickX >= btn.x - 39 && clickX <= (btn.w-150) && 
+                clickY >= btn.y - 37 && clickY <= (btn.h - 71)) {
+                
+
+                if (btn.code) eval(btn.code);
+
+                break; 
+            }
+        }
+
+        window.processes.process1.clicked = false;
+    }
+
+
+}, 1);
 
 </script>
 
