@@ -1,11 +1,13 @@
   // i hate my code
-let nameprocesselementxd;
+
+
+function setupprocess() {
+    let nameprocesselementxd;
 let processCanvas;
 let processCtx;
 let processxd;
-
-function setupprocess() {
-    window.processes = {};
+    if(!window.processes){
+    window.processes = {};}
         
     let localprocess = Object.keys(window.processes).length + 1; 
     let processKey = `process${localprocess}`;
@@ -69,6 +71,8 @@ function setupprocess() {
         processCtx = processCanvas.getContext('2d');
         processCanvas.width = window.innerWidth;
         processCanvas.height = window.innerHeight;
+
+        window.processes[nameprocesselementxd].canvas = processCanvas;
 
         // FIX: Update your layout sizes dynamically now that processCanvas exists!
         window.processButtons[0].w = processCanvas.width;

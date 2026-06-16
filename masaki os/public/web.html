@@ -2,6 +2,7 @@
 
 <script src="processjs.js"></script>
 
+
 <script>
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
@@ -114,6 +115,7 @@ window.onload = function() {
         drawButton(buttons[i].color, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y, buttons[i].text, buttons[i].code, buttons[i].init);
     }
 };
+
 
 // i should press click, letter x then click and then another click and then another letter to get data
 document.onkeypress = function (e) {
@@ -298,9 +300,10 @@ buttons[3].text = timeString;
   for(let i=0; i<buttons.length; i++) {
     let processName = "process" + buttons[i].process;
     if(buttons[i].process &&
-     window.processes[processName] != null &&
-      window.processes[processName].display) {
-      ctx.drawImage(processCanvas, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y);
+     window.processes["process" + buttons[i].process] != null &&
+      window.processes["process" + buttons[i].process].display) {
+      let processCanvasz = window.processes["process" + buttons[i].process].canvas;
+      ctx.drawImage(processCanvasz, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y);
     }
   }
 
