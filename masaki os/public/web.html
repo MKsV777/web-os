@@ -88,6 +88,18 @@ buttons.push({
     "text": "00:00",
     "down": ""
   });
+buttons.push({
+    "x": canvas.width- 70,
+    "y": 0, 
+    "w": canvas.width- 25,
+    "h": 25,
+    "code": '',
+    "init": `let img = new Image(); img.src = '/profile.svg'; img.onload = function() { buttons[4].loadedImg = img; };`,
+    "color": "#171717",
+    "text": "",
+    "down": ""
+  });
+
 
 // REPLACE your loop generation block with this:
 for(let i=0; i<4; i++) {

@@ -78,7 +78,7 @@ let processxd;
                 "x": 0,
                 "y": 50,
                 "w": window.innerWidth, 
-                "h": window.innerHeight, 
+                "h": window.innerHeight,
                 "color": "rgba(200, 220, 240, 0.8)", // Different background color
                 "text": ""
             },
