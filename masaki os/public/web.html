@@ -98,7 +98,7 @@ for(let i=0; i<4; i++) {
     "w": 670 + (i*100) + 10,
     "h": 710,
     "init": `let img = new Image(); img.src = '/ico${i+1}.svg'; img.onload = function() { buttons[${absoluteIndex}].loadedImg = img; };`,
-    "code": i === 0 ? `window.processes["process${i+1}"].display = !window.processes["process${i+1}"].display;` : '',
+    "code": `if(window.processes["process${i+1}"]) { window.processes["process${i+1}"].display = !window.processes["process${i+1}"].display; }`,
     "color": "white",
     "text": "ico",
     "down": ""
@@ -320,8 +320,14 @@ buttons[3].text = timeString;
 
   // draw every process that is on the buttons, draw a each process(canvas) on top of the buttons that have it
 
+  
+
   for(let i=0; i<buttons.length; i++) {
     let processName = "process" + buttons[i].process;
+
+    if(buttons[i].process && window.processes[processName] && !window.processes[processName].display) {
+    continue; 
+  }
     if(buttons[i].process &&
      window.processes["process" + buttons[i].process] != null &&
       window.processes["process" + buttons[i].process].display) {

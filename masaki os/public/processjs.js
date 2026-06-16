@@ -34,33 +34,65 @@ let processxd;
     let proc = window.processes[processKey];
 
     let contador = 0;
-    processButtons = [
+
+    let processButtons = [
         {
-        "x": 0,       
-        "y": 0,       
-        "w": window.innerWidth, // FIX: Use window width as a safe initial placeholder
-        "h": 50,      
-        "color": "#171717", 
-        "text": "file manager",
+            "x": 0,       
+            "y": 0,       
+            "w": window.innerWidth, 
+            "h": 50,      
+            "color": "#171717", 
+            "text": "file manager", // Default title for Process 1
         },
         {
-        "x": 0,
-        "y": 50,
-        "w": window.innerWidth, // FIX: Use window width placeholder
-        "h": window.innerHeight, // FIX: Use window height placeholder
-        "color": "rgba(230, 230, 230, 0.5)",
-        "text": ""
+            "x": 0,
+            "y": 50,
+            "w": window.innerWidth, 
+            "h": window.innerHeight, 
+            "color": "rgba(200, 220, 240, 0.8)",
+            "text": ""
         },
         {
-        "x": 100,
-        "y": 100,
-        "w": 400,
-        "h": 200,
-        "color": "#171717", 
-        "text": "file manager",
-        "code": "alert('hola')"
+            "x": 100,
+            "y": 100,
+            "w": 400,
+            "h": 200,
+            "color": "#171717", 
+            "text": "documents",
+            "code": "alert('not finished feature')"
         }
     ];
+
+    // --- ALTER PROCESS 2 HERE ---
+    if(localprocess == 2){
+        processButtons = [
+            {
+                "x": 0,       
+                "y": 0,       
+                "w": window.innerWidth, 
+                "h": 50,      
+                "color": "#171717", // Change Process 2 header to purple
+                "text": "internet", // Process 2 custom title
+            },
+            {
+                "x": 0,
+                "y": 50,
+                "w": window.innerWidth, 
+                "h": window.innerHeight, 
+                "color": "rgba(200, 220, 240, 0.8)", // Different background color
+                "text": ""
+            },
+            {
+                "x": 100,
+                "y": 100,
+                "w": 400,
+                "h": 200,
+                "color": "#171717", 
+                "text": "download another app", 
+                "code": "alert('not finished feature')" // Custom Process 2 logic
+            }
+        ];
+    }
 
     window.addEventListener('load', function() {
         const canvas = document.createElement('canvas');
