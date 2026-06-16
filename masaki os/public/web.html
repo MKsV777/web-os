@@ -300,15 +300,18 @@ Object.keys(window.processes).forEach((procKey) => {
     
 
 const interz = setInterval(() =>{
+  const liveTime = new Date();
+  const currentHour = now.getHours(); // Returns 0-23   
+  const hour24 = now.getHours();
+  const period = hour24 >= 12 ? 'PM' : 'AM';
+  let hour12 = hour24 % 12;
+  if (hour12 === 0) hour12 = 12; // Midnight becomes 12 AM
+  const timeString = now.toLocaleTimeString('en-US', { 
+    hour: '2-digit', 
+    minute: '2-digit' 
+  });
 
-let hour12 = hour24 % 12;
-if (hour12 === 0) hour12 = 12; // Midnight becomes 12 AM
-const timeString = now.toLocaleTimeString('en-US', { 
-  hour: '2-digit', 
-  minute: '2-digit' 
-});
-
-buttons[3].text = timeString;
+  buttons[3].text = timeString;
 
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
