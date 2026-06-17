@@ -196,8 +196,8 @@ window.addEventListener('mousedown', function(event) {
       let processName = "process" + clickedTarget.process;
       if(window.processes[processName]) {
         window.processes[processName].clicked = true; 
-        window.processes[processName].clickedX = clickX - clickedTarget.x;
-        window.processes[processName].clickedY = clickY - clickedTarget.y;
+        window.processes[processName].clickedX = clickX;
+        window.processes[processName].clickedY = clickY;
       }
       if (clickedTarget.down) {
         if (i === 0 || clickedTarget.process === 2) { // Ensure window 2 has header-dragging limits if desired

@@ -82,16 +82,25 @@ let processxd;
                 "h": window.innerHeight,
                 "color": "rgba(200, 220, 240, 0.8)", // Different background color
                 "text": "",
-                "code": "if (window._process2_listener) { window.removeEventListener('keydown', window._process2_listener); delete window._process2_listener; delete window._hasKeyListener; alert('Key listener stopped remotely.'); }"
+                "code": "if (window._process2_listener) { window.removeEventListener('keydown', window._process2_listener); delete window._process2_listener; delete window._hasKeyListener; }"
             },
             {
                 "x": 0,
-                "y": 100- 40,
-                "w": 1526,
-                "h": 150 ,
+                "y": 60,
+                "w": 1200,
+                "h": 150,
                 "color": "#3a3a3a", 
                 "text": "click and write here to browse", 
-                "code": "if(this.text==='click and write here to browse'){this.text='';}if(!window.hasOwnProperty('_hasKeyListener')){window._hasKeyListener=true;window._process2_listener=(e)=>{let targetBtn=processButtons[2];if(e.key==='Backspace'){targetBtn.text=targetBtn.text.slice(0,-1);}else if(e.key.length===1){targetBtn.text+=e.key;}processCtx.clearRect(0,0,processCanvas.width,processCanvas.height);for(let i=0;i<processButtons.length;i++){let currentBtn=processButtons[i];drawButtonz(currentBtn.color,currentBtn.x,currentBtn.y,currentBtn.w-currentBtn.x,currentBtn.h-currentBtn.y,currentBtn.text,null,null,null);}};window.addEventListener('keydown',window._process2_listener);}else{processCtx.clearRect(0,0,processCanvas.width,processCanvas.height);for(let i=0;i<processButtons.length;i++){let currentBtn=processButtons[i];drawButtonz(currentBtn.color,currentBtn.x,currentBtn.y,currentBtn.w-currentBtn.x,currentBtn.h-currentBtn.y,currentBtn.text,null,null,null);}}alert('Listening for keystrokes...');"
+                "code": "if(this.text==='click and write here to browse'){this.text='';}if(!window.hasOwnProperty('searchbarbrowserxd')){window.searchbarbrowserxd='';}if(!window.hasOwnProperty('_hasKeyListener')){window._hasKeyListener=true;window._process2_listener=(e)=>{if(e.key==='Backspace'){window.searchbarbrowserxd=window.searchbarbrowserxd.slice(0,-1);}else if(e.key.length===1){window.searchbarbrowserxd+=e.key;}processCtx.clearRect(0,0,processCanvas.width,processCanvas.height);for(let i=0;i<processButtons.length;i++){let currentBtn=processButtons[i];let displayText=(i===2)?window.searchbarbrowserxd:currentBtn.text;drawButtonz(currentBtn.color,currentBtn.x,currentBtn.y,currentBtn.w-currentBtn.x,currentBtn.h-currentBtn.y,displayText,null,null,null);}};window.addEventListener('keydown',window._process2_listener);}else{processCtx.clearRect(0,0,processCanvas.width,processCanvas.height);for(let i=0;i<processButtons.length;i++){let currentBtn=processButtons[i];let displayText=(i===2)?window.searchbarbrowserxd:currentBtn.text;drawButtonz(currentBtn.color,currentBtn.x,currentBtn.y,currentBtn.w-currentBtn.x,currentBtn.h-currentBtn.y,displayText,null,null,null);}}"            
+            },
+            {
+                "x": 1410,
+                "y": 60,
+                "w": 1510,
+                "h": 150,
+                "color": "#3a3a3a", 
+                "text": "🔍︎", 
+                "code": "if(window.hasOwnProperty('searchbarbrowserxd') && window.searchbarbrowserxd.trim() !== ''){let iframe=document.getElementById('myIframe') || document.querySelector(\"iframe[name='myIframe']\");if(iframe){let targetUrl=window.searchbarbrowserxd;if(!/^https?:\\/\\//i.test(targetUrl)){targetUrl='https://'+targetUrl;}iframe.src=targetUrl;}else{console.error('Iframe with name or ID \"myIframe\" not found.');}}"
             }
         ];
     }
@@ -171,8 +180,8 @@ setInterval(() => {
         for (let x = processButtons.length - 1; x >= 0; x--){
             let btn = processButtons[x];
 
-            if (clickX >= btn.x - 39 && clickX <= (btn.w ) && 
-                clickY >= btn.y - 20 && clickY <= (btn.h - 61)) {
+            if (clickX >= btn.x && clickX <= btn.w && 
+                clickY >= btn.y && clickY <= btn.h) {
                 
                 if (btn.code) eval(btn.code);
                 break;
