@@ -6,6 +6,13 @@
 <script>
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
+  document.addEventListener('keydown', function(event) {
+    console.log(`Key pressed: ${event.key}`);
+    console.log(`Key code: ${event.code}`);
+
+    window.keypressed = event.key;
+
+  });
 
   // Set canvas size to fill the window
   canvas.width = window.innerWidth;
@@ -134,7 +141,7 @@ document.onkeypress = function (e) {
     e = e || window.event;
     console.log(window.xm / canvas.width, " " ,window.ym / canvas.height, " ", window.w / canvas.width, " ", window.h / canvas.height);
 };
-
+/*
 document.addEventListener('keydown', (event) => {
   // event.key devuelve la letra o tecla presionada
   if (event.key === 'x') {
@@ -145,7 +152,7 @@ document.addEventListener('keydown', (event) => {
   }else if(event.key === 's'){
     console.log(buttons);
   }
-});
+});*/
 
 window.addbutton = () => {
     color = prompt("color:");
