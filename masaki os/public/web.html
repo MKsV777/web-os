@@ -1,8 +1,6 @@
-<canvas id="canvas" style="width: 100%; height: 100%;"></canvas>
-
+<canvas id="canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
 <script src="processjs.js"></script>
-
-
+<iframe src="https://www.wikipedia.org/" id="myIframe" style="position:absolute; z-index: 100; border: none;"></iframe>
 <script>
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
@@ -26,9 +24,9 @@
   
 var buttons = [
     {
-        "x": 4 + 500,
+        "x": 504,
         "y": 65 ,
-        "w": 1000 + 500,
+        "w": 1500,
         "h": 550 ,
         "code": "",
         "down": 'window.isDragging = true; window.draggedButton = window.botonActual',
@@ -319,6 +317,7 @@ Object.keys(window.processes).forEach((procKey) => {
     
 
 const interz = setInterval(() =>{
+  
 const liveTime = new Date();
   
   const hour24 = liveTime.getHours();
@@ -346,11 +345,28 @@ const liveTime = new Date();
   
 
   for(let i=0; i<buttons.length; i++) {
+    
     let processName = "process" + buttons[i].process;
+    if (processName == "process2") {
+    var iframe = document.getElementById("myIframe");
+    
+    if(window.processes.process2 && window.processes.process2.display !== false){
+        iframe.style.display = "block";
+        iframe.style.top = `${buttons[i].y + 100}px`;
+        iframe.style.left = `${buttons[i].x}px`;
+        iframe.style.width = "1330px";
+        iframe.style.height = "510px";
+        iframe.style.transformOrigin = "top left";
+        iframe.style.transform = "scale(0.75)";
+    }
+    if(window.processes.process2.display === false) {
+        iframe.style.display = "none";
+    }
+}
 
     if(buttons[i].process && window.processes[processName] && !window.processes[processName].display) {
-    continue; 
-  }
+      continue; 
+    }
     if(buttons[i].process &&
      window.processes["process" + buttons[i].process] != null &&
       window.processes["process" + buttons[i].process].display) {
@@ -358,6 +374,7 @@ const liveTime = new Date();
       ctx.drawImage(processCanvasz, buttons[i].x, buttons[i].y, buttons[i].w - buttons[i].x, buttons[i].h - buttons[i].y);
     }
   }
+
 
   for(let i=0; i<buttons.length; i++) {
     let processName = "process" + buttons[i].process;
