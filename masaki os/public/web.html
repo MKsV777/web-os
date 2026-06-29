@@ -200,11 +200,13 @@ window.addEventListener('mousedown', function(event) {
         window.processes[processName].clickedY = clickY;
       }
       if (clickedTarget.down) {
-        if (i === 0 || clickedTarget.process === 2) { // Ensure window 2 has header-dragging limits if desired
+        if (i === 0 || clickedTarget.process === 2 || clickedTarget.process === 3) { // Ensure window 2 has header-dragging limits if desired
           if (clickY <= clickedTarget.y + 35) {
              // FIX HERE: Dynamically use explicit variable context instead of eval reliance on the global instance
              window.isDragging = true; 
              window.draggedButton = clickedTarget;
+             const iframe = document.getElementById("myIframe");
+             if (iframe) iframe.style.pointerEvents = "none";
           }
         } else {
           window.isDragging = true;
@@ -299,6 +301,19 @@ const timeString = now.toLocaleTimeString('en-US', {
 buttons[3].text = timeString;
 
 buttons.push(    {
+        "x": 4 + 500 - 200,
+        "y": 65 +35 ,
+        "w": 1000 + 500 - 200,
+        "h": 550 + 35,
+        "code": "",
+        "down": 'window.isDragging = true; window.draggedButton = window.botonActual',
+        "init": "",
+        "color": "#171717",
+        "process": 3,
+        "text": ""
+    });
+
+buttons.push(    {
         "x": 4 + 500 - 50,
         "y": 65 ,
         "w": 1000 + 500 - 50,
@@ -310,6 +325,8 @@ buttons.push(    {
         "process": 2,
         "text": ""
     });
+
+
     
 Object.keys(window.processes).forEach((procKey) => {
     updateprocesswindow(procKey, 0);

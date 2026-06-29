@@ -104,6 +104,45 @@ let processxd;
             }
         ];
     }
+if(localprocess == 3){
+    processButtons = [
+        {
+            "x": 0,      
+            "y": 0,
+            "w": window.innerWidth, 
+            "h": 50,      
+            "color": "#171717",
+            "text": "login",
+        },
+        {
+            "x": 0,
+            "y": 50,
+            "w": window.innerWidth, 
+            "h": window.innerHeight,
+            "color": "rgba(200, 220, 240, 0.8)",
+            "text": "",
+            "code": "if (window._login_listener) { window.removeEventListener('keydown', window._login_listener); delete window._login_listener; delete window._hasLoginKeyListener; }"
+        },
+        {
+            "x": 450,
+            "y": 260,
+            "w": 1100,
+            "h": 350,
+            "color": "#3a3a3a", 
+            "text": "username", 
+            "code": "if(this.text==='username'){this.text='';} if(!window.hasOwnProperty('loginUsernamexd')){window.loginUsernamexd='';} if(!window.hasOwnProperty('_hasLoginKeyListener')){window._hasLoginKeyListener=true; window._login_listener=(e)=>{ let localCanvas = document.getElementById('process3'); if(!localCanvas) return; let localCtx = localCanvas.getContext('2d'); if(e.key==='Backspace'){window.loginUsernamexd=window.loginUsernamexd.slice(0,-1);}else if(e.key.length===1){window.loginUsernamexd+=e.key;} localCtx.clearRect(0,0,localCanvas.width,localCanvas.height); let activeProc = window.processes['process3']; if(activeProc) { localCtx.fillStyle = '#171717'; localCtx.fillRect(0, 0, localCanvas.width, 50); localCtx.fillStyle = 'white'; localCtx.font = '20px Arial'; localCtx.textAlign = 'center'; localCtx.fillText('login', localCanvas.width / 2, 32); localCtx.fillStyle = 'rgba(200, 220, 240, 0.8)'; localCtx.fillRect(0, 50, localCanvas.width, localCanvas.height - 50); localCtx.fillStyle = '#3a3a3a'; localCtx.fillRect(450, 260, 1100 - 450, 350 - 260); localCtx.fillStyle = 'white'; localCtx.fillText(window.loginUsernamexd, 450 + (1100 - 450)/2, 260 + (350 - 260)/2 + 7); localCtx.fillStyle = '#3a3a3a'; localCtx.fillRect(600, 450, 950 - 600, 550 - 450); localCtx.fillStyle = 'white'; localCtx.fillText('login', 600 + (950 - 600)/2, 450 + (550 - 450)/2 + 7); }}; window.addEventListener('keydown',window._login_listener); }else{ let localCanvas = document.getElementById('process3'); if(!localCanvas) return; let localCtx = localCanvas.getContext('2d'); localCtx.clearRect(0,0,localCanvas.width,localCanvas.height); localCtx.fillStyle = '#171717'; localCtx.fillRect(0, 0, localCanvas.width, 50); localCtx.fillStyle = 'white'; localCtx.font = '20px Arial'; localCtx.textAlign = 'center'; localCtx.fillText('login', localCanvas.width / 2, 32); localCtx.fillStyle = 'rgba(200, 220, 240, 0.8)'; localCtx.fillRect(0, 50, localCanvas.width, localCanvas.height - 50); localCtx.fillStyle = '#3a3a3a'; localCtx.fillRect(450, 260, 1100 - 450, 350 - 260); localCtx.fillStyle = 'white'; localCtx.fillText(window.loginUsernamexd, 450 + (1100 - 450)/2, 260 + (350 - 260)/2 + 7); localCtx.fillStyle = '#3a3a3a'; localCtx.fillRect(600, 450, 950 - 600, 550 - 450); localCtx.fillStyle = 'white'; localCtx.fillText('login', 600 + (950 - 600)/2, 450 + (550 - 450)/2 + 7); }"            
+        },
+        {
+            "x": 600,
+            "y": 450,
+            "w": 950,
+            "h": 550,
+            "color": "#3a3a3a", 
+            "text": "login", 
+            "code": "if(window.loginUsernamexd){alert('Intentando iniciar sesión con: ' + window.loginUsernamexd);}else{alert('Por favor escribe un usuario primero.');}"
+        }
+    ];
+}
 
     window.addEventListener('load', function() {
         const canvas = document.createElement('canvas');
@@ -190,5 +229,6 @@ setInterval(() => {
     }
 }, 1);
 }
+setupprocess();
 setupprocess();
 setupprocess();
