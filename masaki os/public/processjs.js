@@ -90,7 +90,7 @@ let processxd;
                 "h": 150,
                 "color": "#3a3a3a", 
                 "text": "click and write here to browse", 
-                "element?": "textinput"
+                "iframetextinput": 1
             },
             {
                 "x": 1410,
