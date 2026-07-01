@@ -88,8 +88,8 @@ let processxd;
                 "y": 30,
                 "w": 796,
                 "h": 190,
-                "color": "#3a3a3a", 
-                "text": "click and write here to browse", 
+                "color": "rgba(200, 220, 240, 0)", 
+                "text": "", 
                 "iframetextinput": 1
             },
             {
@@ -99,7 +99,7 @@ let processxd;
                 "h": 100,
                 "color": "#ff0000", 
                 "text": "🔍︎", 
-                "code": "window.iframe.src = 'https://google.com';"
+                "code": "window.iframe.src = window.textinput.value;"
             }
 
 
