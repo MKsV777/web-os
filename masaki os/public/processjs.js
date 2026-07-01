@@ -163,9 +163,9 @@ function drawButtonz(color, x, y, width, height, text, code, initCode, img) {
     const lines = (text || "").split('\n');
     const lineHeight = 24;
     const totalTextHeight = lines.length * lineHeight;
-    let startY = y + (actualHeight / 2) - (totalTextHeight / 2) + (lineHeight / 2) + 4;
+    let startY = y + (height-y)/2;
     for (let i = 0; i < lines.length; i++) {
-        processCtx.fillText(lines[i], x + actualWidth / 2, startY + (i * lineHeight));
+        processCtx.fillText(lines[i], (x*2) + (width-x)/2, startY + (i * lineHeight));
     }
 }
 setInterval(() => {
