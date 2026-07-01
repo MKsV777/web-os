@@ -93,9 +93,9 @@ let processxd;
                 "iframetextinput": 1
             },
             {
-                "x": 796,
+                "x": 900,
                 "y": 30,
-                "w": 926,
+                "w": 1000,
                 "h": 190,
                 "color": "#ff0000", 
                 "text": "🔍︎", 
@@ -133,11 +133,11 @@ let processxd;
             if (currentBtn.img) {
                 let staticImg = new Image();
                 staticImg.onload = () => {
-                    drawButtonz(currentBtn.color, currentBtn.x, currentBtn.y, currentBtn.w - currentBtn.x, currentBtn.h - currentBtn.y, currentBtn.text, null, null, staticImg);
+                    drawButtonz(currentBtn.color, currentBtn.x, currentBtn.y, currentBtn.w, currentBtn.h, currentBtn.text, null, null, staticImg);
                 };
                 staticImg.src = currentBtn.img;
             } else {
-                drawButtonz(currentBtn.color, currentBtn.x, currentBtn.y, currentBtn.w - currentBtn.x, currentBtn.h - currentBtn.y, currentBtn.text, null, null, null);
+                drawButtonz(currentBtn.color, currentBtn.x, currentBtn.y, currentBtn.w, currentBtn.h , currentBtn.text, null, null, null);
             }
         }
         
@@ -183,8 +183,8 @@ setInterval(() => {
             let btn = processButtons[x];
 
             let proc = window.processes[processKey];
-            let scaledClickX = clickX - proc.x;
-            let scaledClickY = clickY - proc.y;
+            let scaledClickX = clickX;
+            let scaledClickY = clickY;
 
             if (scaledClickX >= btn.x && scaledClickX <= btn.w && 
                 scaledClickY >= btn.y && scaledClickY <= btn.h) {
