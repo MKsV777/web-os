@@ -45,7 +45,7 @@ let processxd;
             "text": "file manager", // Default title for Process 1
         },
         {
-            "x": 0,
+            "x": -50,
             "y": 50,
             "w": window.innerWidth, 
             "h": window.innerHeight, 
@@ -154,7 +154,7 @@ function drawButtonz(color, x, y, width, height, text, code, initCode, img) {
     }
     else if (color) {
         processCtx.fillStyle = color;
-        processCtx.fillRect(x * 2, y * 2, width - x , height -y);    
+        processCtx.fillRect(x * 2, y, width - x , height);    
     }
     
     processCtx.fillStyle = "white";
