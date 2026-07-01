@@ -85,22 +85,24 @@ let processxd;
             },
             {
                 "x": 0,
-                "y": 60,
-                "w": 1200,
-                "h": 150,
+                "y": 30,
+                "w": 796,
+                "h": 190,
                 "color": "#3a3a3a", 
                 "text": "click and write here to browse", 
                 "iframetextinput": 1
             },
             {
-                "x": 1410,
-                "y": 60,
-                "w": 1510,
-                "h": 150,
-                "color": "#3a3a3a", 
+                "x": 796,
+                "y": 30,
+                "w": 926,
+                "h": 190,
+                "color": "#ff0000", 
                 "text": "🔍︎", 
-                "click": ""
-           }
+                "code": "window.iframe.src = 'https://google.com';"
+            }
+
+
         ];
     }
 
@@ -138,6 +140,7 @@ let processxd;
                 drawButtonz(currentBtn.color, currentBtn.x, currentBtn.y, currentBtn.w - currentBtn.x, currentBtn.h - currentBtn.y, currentBtn.text, null, null, null);
             }
         }
+        
     });
 
     function drawButtonz(color, x, y, width, height, text, code, initCode, img) {
@@ -169,9 +172,9 @@ setInterval(() => {
     // Check if a click was registered via bracket notation
     if (window.processes && window.processes[processKey] && window.processes[processKey].clicked) {
         
-        let clickX = window.processes[processKey].clickedX;
-        let clickY = window.processes[processKey].clickedY;
-
+        let proc = window.processes[processKey];
+        let clickX = proc.clickedX - proc.x;
+        let clickY = proc.clickedY - proc.y;
         // CRITICAL FIX: Turn the clicked flag off IMMEDIATELY here.
         // This consumes the click token so the next millisecond loop cycle skips this block.
         window.processes[processKey].clicked = false;
@@ -179,9 +182,12 @@ setInterval(() => {
         for (let x = processButtons.length - 1; x >= 0; x--){
             let btn = processButtons[x];
 
-            if (clickX >= btn.x && clickX <= btn.w && 
-                clickY >= btn.y && clickY <= btn.h) {
-                
+            let proc = window.processes[processKey];
+            let scaledClickX = clickX - proc.x;
+            let scaledClickY = clickY - proc.y;
+
+            if (scaledClickX >= btn.x && scaledClickX <= btn.w && 
+                scaledClickY >= btn.y && scaledClickY <= btn.h) {
                 if (btn.code) eval(btn.code);
                 break;
             }

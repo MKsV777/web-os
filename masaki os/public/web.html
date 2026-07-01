@@ -1,31 +1,13 @@
 <canvas id="canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
 <script src="processjs.js"></script>
 <iframe src="https://www.wikipedia.org/" id="myIframe" style="position:absolute; z-index: 100; border: none;"></iframe>
+<input type="text" id ="input" style="position:absolute; z-index: 100; border: none;">
 <script>
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
   document.addEventListener('keydown', function(event) {
     console.log(`Key pressed: ${event.key}`);
     console.log(`Key code: ${event.code}`);
-
-    let activeProcess = window.processes["process2"];
-      
-    if (activeProcess && activeProcess.display) {
-        if (activeProcess.textinputfromiframex === undefined) activeProcess.textinputfromiframex = "";
-        
-        // Si es una tecla especial como Enter, dispara la búsqueda
-        if (event.key === "Enter") {
-            let iframe = document.getElementById('myIframe');
-            iframe.src = "https://www.google.com/search?q=" + encodeURIComponent(activeProcess.textinputfromiframex);
-        } else if (event.key.length === 1) { 
-            // Si es una letra normal, agrégala
-            activeProcess.textinputfromiframex += event.key;
-            
-            // Actualiza el texto visual del botón en el canvas
-            let btn = buttons.find(b => b.process === 2);
-            if (btn) btn.text = activeProcess.textinputfromiframex;
-        }
-    }
 
   });
 
@@ -78,10 +60,10 @@ Object.keys(window.processes).forEach((procKey) => {
     }
 */
 buttons.push({
-    "x": 600 ,
-    "y": 640, 
-    "w": 1000,
-    "h": 730,
+    "x": canvas.width/2-200 ,
+    "y": canvas.height-180,
+    "w": canvas.width/2+200,
+    "h": canvas.height-90,
     "code": '',
     "init": `let img = new Image(); img.src = '/bar.svg'; img.onload = function() { buttons[1].loadedImg = img; };`,
     "color": "white",
@@ -127,10 +109,10 @@ buttons.push({
 for(let i=0; i<4; i++) {
   let absoluteIndex = buttons.length;
   buttons.push({
-    "x": 613 + (i*100),
-    "y": 650,
-    "w": 670 + (i*100) + 10,
-    "h": 710,
+    "x": (canvas.width/10 * 4.25)-30+20 + (i*canvas.width/500 * 19.2),
+    "y": canvas.height-170,
+    "w": (canvas.width/10 * 4.25)+30+20 + (i*canvas.width/500 * 19.2),
+    "h": canvas.height-110,
     "init": `let img = new Image(); img.src = '/ico${i+1}.svg'; img.onload = function() { buttons[${absoluteIndex}].loadedImg = img; };`,
     "code": `if(window.processes["process${i+1}"]) { window.processes["process${i+1}"].display = !window.processes["process${i+1}"].display; }`,
     "color": "white",
@@ -227,15 +209,6 @@ window.addEventListener('mousedown', function(event) {
         }
       }
       // let iframe=document.getElementById('myIframe') || document.querySelector(\"iframe[name='myIframe']\");if(iframe){let targetUrl=window.searchbarbrowserxd;if(!/^https?:\\/\\//i.test(targetUrl)){targetUrl='https://'+targetUrl;}iframe.src=targetUrl;}else{console.error('Iframe with name or ID \"myIframe\" not found.');}}"
-      if(window.processes[processName].iframesearch != null){
-        if(window.processes[processName].clicked == true){
-          let iframe=document.getElementById('myIframe');
-          let proc = window.processes[processName];
-
-          iframe.src = proc.textinputfromiframex;
-
-        }
-      }
 
       if (clickedTarget.down) {
         if (i === 0 || clickedTarget.process === 2) { // Ensure window 2 has header-dragging limits if desired
@@ -311,10 +284,12 @@ canvas.addEventListener('click', function(event) {
       if (i === 1) continue;
         const actualwidth = buttons[i].w - buttons[i].x;
         const actualheight = buttons[i].h - buttons[i].y;
-
+        let proc = window.processes[i];
         if (clickX >= buttons[i].x && clickX <= (buttons[i].x + actualwidth) && 
         clickY >= buttons[i].y && clickY <= (buttons[i].y + actualheight)) {
           
+          console.log(`Click detected x: (${clickX}), y: ${clickY}`);
+          console.log(`Button check - Red button x: 900-1000, y: 60-150`);
           //alert("Dynamic Button " + (i + 1) + " clicked!");
           window.botonActual = buttons[i];
           eval(buttons[i].code);
@@ -389,6 +364,8 @@ const liveTime = new Date();
 
   
   var iframe = document.getElementById("myIframe");
+  window.iframe = iframe;
+  window.textinput = document.getElementById("input");
   for(let i=0; i<buttons.length; i++) {
     
     let processName = "process" + buttons[i].process;
@@ -406,6 +383,19 @@ const liveTime = new Date();
     }
     if(window.processes.process2.display === false) {
         iframe.style.display = "none";
+    }
+
+    if(window.processes.process2 && window.processes.process2.display !== false){
+      window.textinput.style.display = "block";
+      window.textinput.style.top = `${buttons[i].y+ 30}px`;
+      window.textinput.style.left = `${buttons[i].x}px`;
+      window.textinput.style.width = "50px";
+      window.textinput.style.height = "70px";
+      window.textinput.style.transformOrigin = "top left";
+      window.textinput.style.transform = "scale(0.75)";
+    }
+    if(window.processes.process2.display === false){
+      window.textinput.style.display = "none";
     }
 }
 
