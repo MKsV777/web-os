@@ -94,9 +94,9 @@ let processxd;
             },
             {
                 "x": 900,
-                "y": 30,
+                "y": 40,
                 "w": 1000,
-                "h": 190,
+                "h": 100,
                 "color": "#ff0000", 
                 "text": "🔍︎", 
                 "code": "window.iframe.src = 'https://google.com';"
@@ -137,35 +137,37 @@ let processxd;
                 };
                 staticImg.src = currentBtn.img;
             } else {
-                drawButtonz(currentBtn.color, currentBtn.x, currentBtn.y, currentBtn.w, currentBtn.h , currentBtn.text, null, null, null);
+                drawButtonz(currentBtn.color, currentBtn.x, currentBtn.y, currentBtn.w, currentBtn.h, currentBtn.text, null, null, null);
             }
         }
         
     });
 
-    function drawButtonz(color, x, y, width, height, text, code, initCode, img) {
-        if (x === undefined || y === undefined) return;
-
-        if (img && img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0) {
-            processCtx.drawImage(img, x, y, width, height);
-        }
-        else if (color) {
-            processCtx.fillStyle = color;
-            processCtx.fillRect(x, y, width, height);    
-        }
-        
-
-        processCtx.fillStyle = "white";
-        processCtx.font = "20px Arial";
-        processCtx.textAlign = "center";
-        const lines = (text || "").split('\n');
-        const lineHeight = 24;
-        const totalTextHeight = lines.length * lineHeight;
-        let startY = y + (height / 2) - (totalTextHeight / 2) + (lineHeight / 2) + 4;
-        for (let i = 0; i < lines.length; i++) {
-            processCtx.fillText(lines[i], x + width / 2, startY + (i * lineHeight));
-        }
+function drawButtonz(color, x, y, width, height, text, code, initCode, img) {
+    if (x === undefined || y === undefined) return;
+    
+    const actualWidth = width - x;
+    const actualHeight = height - y;
+    
+    if (img && img instanceof HTMLImageElement && img.complete && img.naturalWidth > 0) {
+        processCtx.drawImage(img, x, y, actualWidth, actualHeight);
     }
+    else if (color) {
+        processCtx.fillStyle = color;
+        processCtx.fillRect(x * 2, y * 2, width - x , height -y);    
+    }
+    
+    processCtx.fillStyle = "white";
+    processCtx.font = "20px Arial";
+    processCtx.textAlign = "center";
+    const lines = (text || "").split('\n');
+    const lineHeight = 24;
+    const totalTextHeight = lines.length * lineHeight;
+    let startY = y + (actualHeight / 2) - (totalTextHeight / 2) + (lineHeight / 2) + 4;
+    for (let i = 0; i < lines.length; i++) {
+        processCtx.fillText(lines[i], x + actualWidth / 2, startY + (i * lineHeight));
+    }
+}
 setInterval(() => {
     if (!processCtx) return;
     
